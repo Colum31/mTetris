@@ -119,14 +119,16 @@ int main(){
     initBoard(curBoard);
     saveTickTime();
 
-    memcpy(curPiece, figs[1], PIECE_LEN);
+    memcpy(curPiece, figs[1], PIECE_LEN * sizeof(int));
+
+    int drop = 0;
 
     while(1){
         // main game loop
 
         if(checkMoveFinished(curBoard, curPiece, curPieceX, curPieceY)){
             // spawn new piece
-            memcpy(curPiece, figs[1], PIECE_LEN);
+            memcpy(curPiece, figs[1], PIECE_LEN * sizeof(int));
 
             curPieceY = SPAWN_Y;
             curPieceX = SPAWN_X;
@@ -169,26 +171,20 @@ int main(){
                     break;
             }
 
-            if(ret == redraw || ret == moveRight || ret == moveLeft){
-                displayPlayerPiece(curBoard, curPiece, curPieceX, curPieceY);
-            }
-
             if(ret == drop){
-                int remainingTime = checkTick();
-                int timePassed = TICK_MS - remainingTime;
-
-                if(timePassed > DROP_MS){
-                    break;
-                }
-
-                napms(TICK_MS - timePassed);
                 break;
-
             }
+
+            displayPlayerPiece(curBoard, curPiece, curPieceX, curPieceY);
 
             int remainingTime = checkTick();
             timeout(remainingTime);
 
+        }
+
+        if(drop){
+            drop = 0;
+            napms(100);
         }
 
         displayPlayerPiece(curBoard, curPiece, curPieceX, curPieceY);
