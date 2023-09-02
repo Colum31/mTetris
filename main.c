@@ -28,14 +28,18 @@ int main(){
 
     timeout(TICK_MS);
 
-    memcpy(curPiece, figs[1], PIECE_LEN * sizeof(int));
-
+    int spawnFirstPiece = 1;
     int drop = 0;
 
     while(1){
         // main game loop
 
-        if(checkMoveFinished(curBoard, curPiece, curPieceX, curPieceY)){
+        if(!checkMove(curPiece, curPieceX, curPieceY + 1, curBoard) || spawnFirstPiece){
+
+            spawnFirstPiece = 0;
+
+            // save last piece on board
+            updateBoard(curBoard, curPiece, curPieceX, curPieceY);
             // spawn new piece
             memcpy(curPiece, figs[1], PIECE_LEN * sizeof(int));
 
@@ -49,6 +53,7 @@ int main(){
                 break;
             }
         }else{
+            curPieceY++;
             displayPlayerPiece(curBoard, curPiece, curPieceX, curPieceY);
         }
 
@@ -97,8 +102,6 @@ int main(){
         }
 
         displayPlayerPiece(curBoard, curPiece, curPieceX, curPieceY);
-        curPieceY++;
-
     }
 
     napms(5000);

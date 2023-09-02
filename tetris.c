@@ -19,16 +19,6 @@ void updateBoard(int *board, int *playerPiece, int pieceX, int pieceY){
     memcpy(board, renderedBoard, sizeof(int) * BOARDSIZE);
 }
 
-bool checkMoveFinished(int *board, int *playerPiece, int pieceX, int pieceY){
-    
-    if(!checkMove(playerPiece, pieceX, pieceY, board)){
-        updateBoard(board, playerPiece, pieceX, pieceY - 1);
-        return true;
-    }
-    return false;
-}
-
-
 bool checkSpawnPiece(int *pieceToSpawn, int *boardToSpawnIn){
     return checkMove(pieceToSpawn, SPAWN_X, SPAWN_Y, boardToSpawnIn);
 }

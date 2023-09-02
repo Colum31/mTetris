@@ -17,7 +17,6 @@ void updateBoard(int *board, int *playerPiece, int pieceX, int pieceY);
 
 enum boardAction handleUserInput(char input, int *board, int *playerPiece, int pieceX, int pieceY);
 
-bool checkMoveFinished(int *board, int *playerPiece, int pieceX, int pieceY);
 bool checkSpawnPiece(int *pieceToSpawn, int *boardToSpawnIn);
 void renderBoard(int *renderedBoard, int *boardToRender, int *pieceToRender, int piecePosX, int piecePosY);
 bool checkMove(int *piece, int piecePosX, int piecePosY, int *boardToCheck);
