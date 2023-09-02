@@ -4,7 +4,7 @@
 #include <ncurses.h>
 #include "settings.h"
 
-WINDOW* initCurses();
+void initCurses();
 void drawBoard(int *boardToDraw);
 
 #endif

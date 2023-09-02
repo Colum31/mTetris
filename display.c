@@ -1,18 +1,12 @@
 #include "inc/display.h"
 
 
-WINDOW* initCurses(){
-
-    WINDOW *wnd;
-
-    wnd = initscr();
+void initCurses(){
+    initscr();
     cbreak();
     noecho();
     clear();
     refresh();
-
-
-    return wnd;
 }
 
 

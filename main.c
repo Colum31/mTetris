@@ -14,7 +14,7 @@ void displayPlayerPiece(int *board, int *playerPiece, int pieceX, int pieceY){
 }
 
 int main(){
-    WINDOW *wnd = initCurses();
+    initCurses();
     clear();
     refresh();
 
