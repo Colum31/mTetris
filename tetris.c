@@ -1,5 +1,9 @@
 #include <string.h> 
+#include <stdlib.h>
+
 #include "inc/tetris.h"
+
+#define NUM_SHAPES 6
 
 const int square[]= {0,1,1,0,1,1,0,0,0};
 const int t[] = {1,1,1,0,1,0,0,0,0};
@@ -8,10 +12,17 @@ const int s[] = {0,1,1,1,1,0,0,0,0};
 const int j[] = {1,1,1,0,0,1,0,0,0};
 const int l[] = {1,1,1,1,0,0,0,0,0};
 
+const int *figs[NUM_SHAPES] = {square, t, z, s, j, l};
+
 void initBoard(int *boardToInit){
     memset(boardToInit, 0, sizeof(int) * BOARDSIZE);
 }
 
+
+void getRandomPiece(int *dest){
+    int r = rand();
+    memcpy(dest, figs[r % NUM_SHAPES], PIECE_LEN * sizeof(int));
+}
 
 void updateBoard(int *board, int *playerPiece, int pieceX, int pieceY){
     int renderedBoard[BOARDSIZE];

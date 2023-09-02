@@ -1,11 +1,6 @@
-#include <string.h>
-
 #include "inc/tetris.h"
-#include "inc/main.h"
 #include "inc/display.h"
 #include "inc/timer.h"
-
-const int *figs[NUM_SHAPES] = {square, t, z, s, j, l};
 
 int curBoard[BOARDSIZE];
 int curPiece[PIECE_LEN];
@@ -41,7 +36,7 @@ int main(){
             // save last piece on board
             updateBoard(curBoard, curPiece, curPieceX, curPieceY);
             // spawn new piece
-            memcpy(curPiece, figs[1], PIECE_LEN * sizeof(int));
+            getRandomPiece(curPiece);
 
             curPieceY = SPAWN_Y;
             curPieceX = SPAWN_X;

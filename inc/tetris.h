@@ -13,6 +13,8 @@ void rotateLeft(int *dest, int len, enum shape curShape);
 
 
 void initBoard(int *boardToInit);
+void getRandomPiece(int *dest);
+
 void updateBoard(int *board, int *playerPiece, int pieceX, int pieceY);
 
 enum boardAction handleUserInput(char input, int *board, int *playerPiece, int pieceX, int pieceY);
