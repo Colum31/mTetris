@@ -1,13 +1,11 @@
-#define _POSIX_C_SOURCE 199309L
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 
 #include "inc/tetris.h"
 #include "inc/main.h"
 #include "inc/display.h"
+#include "inc/timer.h"
 
 const int *figs[NUM_SHAPES] = {square, t, z, s, j, l};
 
@@ -15,33 +13,6 @@ int curBoard[BOARDSIZE];
 int curPiece[PIECE_LEN];
 int curPieceX = SPAWN_X;
 int curPieceY = SPAWN_Y;
-
-struct timespec lastTick;
-
-long double diff_ms(struct timespec *start, struct timespec *end){
-    long double startTimeMs = start->tv_sec * 1000.0 + start->tv_nsec / 1000000.0;
-    long double endTimeMs = end->tv_sec * 1000.0 + end->tv_nsec / 1000000.0;
-
-    return endTimeMs - startTimeMs;
-}
-
-int checkTick(){
-
-    struct timespec curTick;
-    clock_gettime(CLOCK_REALTIME, &curTick);
-
-    int diff = (int) diff_ms(&lastTick, &curTick);
-
-    if(diff >= TICK_MS){
-        return 0;
-    }else{
-        return TICK_MS - diff;
-    }
-}
-
-void saveTickTime(){
-    clock_gettime(CLOCK_REALTIME, &lastTick);
-}
 
 void displayPlayerPiece(int *board, int *playerPiece, int pieceX, int pieceY){
     int renderedBoard[BOARDSIZE];

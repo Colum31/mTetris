@@ -1,8 +1,8 @@
-tetris: main.o tetris.o display.o
-	cc -lncurses -o tetris main.o tetris.o display.o
+tetris: main.o tetris.o display.o timer.o
+	cc -lncurses -o tetris main.o tetris.o display.o timer.o
 
-debug: main.o tetris.o
-	cc -lncurses -o tetris main.o tetris.o 
+debug: main.o tetris.o display.o
+	cc -lncurses -o tetris main.o tetris.o display.o timer.o
 	gdb tetris
 
 main.o: main.c 
@@ -14,5 +14,9 @@ tetris.o: tetris.c
 display.o: display.c
 	cc -c -Wall -g display.c
 
+timer.o: timer.c
+	cc -c -Wall -g timer.c
+
 clean:
-	rm tetris main.o tetris.o
+	rm *.o
+	rm tetris
