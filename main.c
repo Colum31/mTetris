@@ -3,14 +3,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <curses.h>
 #include <time.h>
 
 #include "inc/tetris.h"
 #include "inc/main.h"
-
-#define TICK_MS 750
-#define DROP_MS 100
+#include "inc/display.h"
 
 const int *figs[NUM_SHAPES] = {square, t, z, s, j, l};
 
@@ -20,22 +17,6 @@ int curPieceX = SPAWN_X;
 int curPieceY = SPAWN_Y;
 
 struct timespec lastTick;
-
-WINDOW* initCurses(){
-
-    WINDOW *wnd;
-
-    wnd = initscr();
-    cbreak();
-    timeout(TICK_MS);
-    noecho();
-    clear();
-    refresh();
-
-
-    return wnd;
-}
-
 
 long double diff_ms(struct timespec *start, struct timespec *end){
     long double startTimeMs = start->tv_sec * 1000.0 + start->tv_nsec / 1000000.0;
@@ -62,54 +43,11 @@ void saveTickTime(){
     clock_gettime(CLOCK_REALTIME, &lastTick);
 }
 
-
-void drawBoard(int *boardToDraw){
-
-    clear();
-
-    for(int i = 0; i < BOARDSIZE; i++){
-        
-        int y = i / BOARD_X;
-        int x = i - y * BOARD_X;
-
-        move(y, x);
-        delch();
-
-        if(boardToDraw[i]){
-            insch('x');
-        }else{
-            insch('.');
-        }
-
-    }
-
-    for(int i = 0; i < BOARD_Y; i++){
-        move(i, BOARD_X);
-        insch('|');
-    }
-
-    refresh();
-}
-
 void displayPlayerPiece(int *board, int *playerPiece, int pieceX, int pieceY){
     int renderedBoard[BOARDSIZE];
     renderBoard(renderedBoard, board, playerPiece, pieceX, pieceY);
     drawBoard(renderedBoard);
 }
-
-
-
-bool checkMoveFinished(int *board, int *playerPiece, int pieceX, int pieceY){
-    
-    if(!checkMove(playerPiece, pieceX, pieceY, board)){
-        updateBoard(board, playerPiece, pieceX, pieceY - 1);
-        return true;
-    }
-
-    return false;
-
-}
-
 
 int main(){
     WINDOW *wnd = initCurses();
@@ -118,6 +56,8 @@ int main(){
 
     initBoard(curBoard);
     saveTickTime();
+
+    timeout(TICK_MS);
 
     memcpy(curPiece, figs[1], PIECE_LEN * sizeof(int));
 
