@@ -80,8 +80,9 @@ enum boardAction handleUserInput(char input, int *board, int *playerPiece, int p
         }
         return none;
 
+    case 'F':
     case 'f':
-        return drop;
+        return dropOne;
 
     default:
         break;

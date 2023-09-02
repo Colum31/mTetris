@@ -171,7 +171,7 @@ int main(){
                     break;
             }
 
-            if(ret == drop){
+            if(ret == dropOne){
                 break;
             }
 

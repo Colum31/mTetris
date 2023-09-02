@@ -14,7 +14,7 @@
 #include <stdbool.h>
 
 enum shape{SquareShape, TShape, ZShape, SShape, JShape, LShape};
-enum boardAction{none, redraw, moveRight, moveLeft, drop, instantDrop};
+enum boardAction{none, redraw, moveRight, moveLeft, dropOne, instantDrop};
 
 
 void rotateRight(int *dest, int len, enum shape curShape);
