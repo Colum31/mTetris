@@ -35,13 +35,13 @@ int main(){
 
             // save last piece on board
             updateBoard(curBoard, curPiece, curPieceX, curPieceY);
+
+            clearRows(curBoard, curPieceY);
             // spawn new piece
             getRandomPiece(curPiece);
 
             curPieceY = SPAWN_Y;
             curPieceX = SPAWN_X;
-
-            displayPlayerPiece(curBoard, curPiece, curPieceX, curPieceY);
 
             if(!checkSpawnPiece(curPiece, curBoard)){
                 // Game over
@@ -49,11 +49,11 @@ int main(){
             }
         }else{
             curPieceY++;
-            displayPlayerPiece(curBoard, curPiece, curPieceX, curPieceY);
         }
 
-        // infra tick
+        displayPlayerPiece(curBoard, curPiece, curPieceX, curPieceY);
 
+        // infra tick
         timeout(TICK_MS);
         saveTickTime();
 

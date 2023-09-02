@@ -16,6 +16,7 @@ void initBoard(int *boardToInit);
 void getRandomPiece(int *dest);
 
 void updateBoard(int *board, int *playerPiece, int pieceX, int pieceY);
+void clearRows(int *boardToClear, int pieceY);
 
 enum boardAction handleUserInput(char input, int *board, int *playerPiece, int pieceX, int pieceY);
 

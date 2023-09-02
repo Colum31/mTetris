@@ -18,7 +18,6 @@ void initBoard(int *boardToInit){
     memset(boardToInit, 0, sizeof(int) * BOARDSIZE);
 }
 
-
 void getRandomPiece(int *dest){
     int r = rand();
     memcpy(dest, figs[r % NUM_SHAPES], PIECE_LEN * sizeof(int));
@@ -33,7 +32,6 @@ void updateBoard(int *board, int *playerPiece, int pieceX, int pieceY){
 bool checkSpawnPiece(int *pieceToSpawn, int *boardToSpawnIn){
     return checkMove(pieceToSpawn, SPAWN_X, SPAWN_Y, boardToSpawnIn);
 }
-
 
 void renderBoard(int *renderedBoard, int *boardToRender, int *pieceToRender, int piecePosX, int piecePosY){
 
@@ -51,7 +49,6 @@ void renderBoard(int *renderedBoard, int *boardToRender, int *pieceToRender, int
         renderedBoard[boardPos] = 1;
     }
 }
-
 
 enum boardAction handleUserInput(char input, int *board, int *playerPiece, int pieceX, int pieceY){
     
@@ -101,7 +98,6 @@ enum boardAction handleUserInput(char input, int *board, int *playerPiece, int p
     return none;
 }
 
-
 bool checkMove(int *piece, int piecePosX, int piecePosY, int *boardToCheck){
 
     for(int i = 0; i < PIECE_LEN; i++){
@@ -131,7 +127,6 @@ bool checkMove(int *piece, int piecePosX, int piecePosY, int *boardToCheck){
     return true;
 }
 
-
 void rotateRight(int *dest, int len, enum shape curShape){
 
     int tmpShapeCopy[9];
@@ -153,7 +148,6 @@ void rotateRight(int *dest, int len, enum shape curShape){
     dest[3] = tmpShapeCopy[7];          
 }
 
-
 void rotateLeft(int *dest, int len, enum shape curShape){
 
     int tmpShapeCopy[9];
@@ -173,4 +167,29 @@ void rotateLeft(int *dest, int len, enum shape curShape){
     dest[3] = tmpShapeCopy[1];
     dest[1] = tmpShapeCopy[5];
     dest[5] = tmpShapeCopy[7];          
+}
+
+void clearRows(int *boardToClear, int pieceY){
+
+    for(int y = pieceY; y < pieceY + 4 && y < BOARD_Y; y++){
+
+        int rowSet = 1;
+        
+        for(int boardPos = y * BOARD_X; boardPos < y * BOARD_X + BOARD_X; boardPos++){
+            if(!boardToClear[boardPos]){
+                rowSet = 0;
+                break;
+            }
+        }
+
+        if(!rowSet){
+            continue;
+        }
+        memset(&boardToClear[y * BOARD_X], 0, BOARD_X * sizeof(int));
+
+        int toMove = y * BOARD_X;
+
+        memmove(&boardToClear[BOARD_X], boardToClear, toMove * sizeof(int));
+    }
+
 }
