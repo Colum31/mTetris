@@ -1,5 +1,3 @@
-#include <stdint.h>
-
 #define NUM_SHAPES 6
 
 extern const int square[9];
