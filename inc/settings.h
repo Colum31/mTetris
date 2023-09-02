@@ -11,7 +11,7 @@
 
 #define PIECE_LEN 9
 
-#define SPAWN_X 3
+#define SPAWN_X (BOARD_X / 2) - 1
 #define SPAWN_Y 0
 
 
