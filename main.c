@@ -14,9 +14,7 @@ void displayPlayerPiece(int *board, int *playerPiece, int pieceX, int pieceY){
 }
 
 int main(){
-    initCurses();
-    clear();
-    refresh();
+    initDisplay();
 
     initBoard(curBoard);
     saveTickTime();

@@ -1,7 +1,7 @@
 #include "inc/display.h"
 
 
-void initCurses(){
+void initDisplay(){
     initscr();
     cbreak();
     noecho();
