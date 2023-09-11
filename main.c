@@ -1,57 +1,25 @@
-#include "inc/tetris.h"
+#include "inc/tetrisRunner.h"
 #include "inc/display.h"
 #include "inc/timer.h"
 
-int curBoard[BOARDSIZE];
-int curPiece[PIECE_LEN];
-int curPieceX = SPAWN_X;
-int curPieceY = SPAWN_Y;
-
-void displayPlayerPiece(int *board, int *playerPiece, int pieceX, int pieceY){
-    int renderedBoard[BOARDSIZE];
-    renderBoard(renderedBoard, board, playerPiece, pieceX, pieceY);
-    drawBoard(renderedBoard);
-}
 
 int main(){
     initDisplay();
-
-    initBoard(curBoard);
+    initGame();
     saveTickTime();
 
     timeout(TICK_MS);
 
-    int spawnFirstPiece = 1;
-    int drop = 0;
-
     while(1){
         // main game loop
+        drawBoard(curRenderedBoard);
 
-        if(!checkMove(curPiece, curPieceX, curPieceY + 1, curBoard) || spawnFirstPiece){
-
-            spawnFirstPiece = 0;
-
-            // save last piece on board
-            updateBoard(curBoard, curPiece, curPieceX, curPieceY);
-
-            clearRows(curBoard, curPieceY);
-            // spawn new piece
-            getRandomPiece(curPiece);
-
-            curPieceY = SPAWN_Y;
-            curPieceX = SPAWN_X;
-
-            if(!checkSpawnPiece(curPiece, curBoard)){
-                // Game over
-                break;
-            }
-        }else{
-            curPieceY++;
+        if(!handleTick()){
+            break;
         }
 
-        displayPlayerPiece(curBoard, curPiece, curPieceX, curPieceY);
+        drawBoard(curRenderedBoard);
 
-        // infra tick
         timeout(TICK_MS);
         saveTickTime();
 
@@ -63,38 +31,17 @@ int main(){
                 break;
             }
 
-            enum boardAction ret = handleUserInput(c, curBoard, curPiece, curPieceX, curPieceY);
-
-            switch(ret){
-
-                case moveRight:
-                    curPieceX++;
-                    break;
-                case moveLeft:
-                    curPieceX--;
-                    break;
-
-                default:
-                    break;
-            }
-
-            if(ret == dropOne){
+            if(handleUserEvent(c) == skipRound){
+                drawBoard(curRenderedBoard);
                 break;
             }
 
-            displayPlayerPiece(curBoard, curPiece, curPieceX, curPieceY);
+            drawBoard(curRenderedBoard);
 
             int remainingTime = checkTick();
             timeout(remainingTime);
 
         }
-
-        if(drop){
-            drop = 0;
-            napms(100);
-        }
-
-        displayPlayerPiece(curBoard, curPiece, curPieceX, curPieceY);
     }
 
     napms(5000);
