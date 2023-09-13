@@ -1,7 +1,7 @@
 #include <string.h> 
 #include <stdlib.h>
 
-#include "inc/tetris.h"
+#include "tetris.h"
 
 #define NUM_SHAPES 6
 
@@ -50,45 +50,39 @@ void renderBoard(int *renderedBoard, int *boardToRender, int *pieceToRender, int
     }
 }
 
-enum boardAction handleUserInput(char input, int *board, int *playerPiece, int pieceX, int pieceY){
+enum boardAction handleUserInput(enum userRequest r, int *board, int *playerPiece, int pieceX, int pieceY){
     
     int modifiedPiece[PIECE_LEN];
     memcpy(modifiedPiece, playerPiece, sizeof(int) * PIECE_LEN);
 
-    switch (input)
+    switch (r)
     {
-    case 'R':
-    case 'r':
+    case requestRotateRight:
         rotateRight(modifiedPiece, sizeof(int) * PIECE_LEN, TShape);
         if(checkMove(modifiedPiece, pieceX, pieceY, board)){
             memcpy(playerPiece, modifiedPiece, sizeof(int) * PIECE_LEN);
         }
         return redraw;
 
-    case 'L':
-    case 'l':
+    case requestRotateLeft:
         rotateLeft(modifiedPiece, sizeof(int) * PIECE_LEN, TShape);
         if(checkMove(modifiedPiece, pieceX, pieceY, board)){
             memcpy(playerPiece, modifiedPiece, sizeof(int) * PIECE_LEN);
         }
         return redraw;
 
-    case 'D':
-    case 'd':
+    case requestRight:
         if(checkMove(modifiedPiece, pieceX + 1, pieceY, board)){
             return moveRight;
         }
         return none;
-
-    case 'A':
-    case 'a':
+    case requestLeft:
         if(checkMove(modifiedPiece, pieceX - 1, pieceY, board)){
             return moveLeft;
         }
         return none;
 
-    case 'F':
-    case 'f':
+    case requestDrop:
         return dropOne;
 
     default:

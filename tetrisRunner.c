@@ -1,5 +1,5 @@
-#include "inc/tetris.h"
-#include "inc/tetrisRunner.h"
+#include "tetris.h"
+#include "tetrisRunner.h"
 
 int curBoard[BOARDSIZE];
 int curPiece[PIECE_LEN];
@@ -49,7 +49,34 @@ bool handleTick(){
 
 
 enum gameEvent handleUserEvent(char c){
-    enum boardAction ret = handleUserInput(c, curBoard, curPiece, curPieceX, curPieceY);
+
+    if(c < 91){
+        c = c + 32;
+    }
+
+    enum userRequest req;
+
+    switch (c){
+        case BINDING_DROP:
+            req = requestDrop;
+            break;
+        case BINDING_LEFT:
+            req = requestLeft;
+            break;
+        case BINDING_RIGHT:
+            req = requestRight;
+            break;
+        case BINDING_ROATATE_LEFT:
+            req = requestRotateLeft;
+            break;
+        case BINDING_ROTATE_RIGHT:
+            req = requestRotateRight;
+            break;
+        default:
+            return continueRound;
+    }
+
+    enum boardAction ret = handleUserInput(req, curBoard, curPiece, curPieceX, curPieceY);
 
     switch(ret){
 
@@ -67,7 +94,7 @@ enum gameEvent handleUserEvent(char c){
         default:
             displayPlayerPiece();
             return continueRound;
-    }
+    }  
 
 }
 

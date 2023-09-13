@@ -5,6 +5,8 @@
 #include "settings.h"
 
 enum shape{SquareShape, TShape, ZShape, SShape, JShape, LShape};
+
+enum userRequest{requestLeft, requestRight, requestDrop, requestRotateRight, requestRotateLeft};
 enum boardAction{none, redraw, moveRight, moveLeft, dropOne, instantDrop};
 
 
@@ -18,7 +20,7 @@ void getRandomPiece(int *dest);
 void updateBoard(int *board, int *playerPiece, int pieceX, int pieceY);
 void clearRows(int *boardToClear, int pieceY);
 
-enum boardAction handleUserInput(char input, int *board, int *playerPiece, int pieceX, int pieceY);
+enum boardAction handleUserInput(enum userRequest r, int *board, int *playerPiece, int pieceX, int pieceY);
 
 bool checkSpawnPiece(int *pieceToSpawn, int *boardToSpawnIn);
 void renderBoard(int *renderedBoard, int *boardToRender, int *pieceToRender, int piecePosX, int piecePosY);

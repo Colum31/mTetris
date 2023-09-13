@@ -8,13 +8,15 @@ int main(){
     initGame();
     saveTickTime();
 
+    int startedGame = 1;
+
     timeout(TICK_MS);
 
     while(1){
         // main game loop
         drawBoard(curRenderedBoard);
 
-        if(!handleTick()){
+        if(startedGame == 0 && !handleTick()){
             break;
         }
 
@@ -42,6 +44,8 @@ int main(){
             timeout(remainingTime);
 
         }
+
+        startedGame = 0;
     }
 
     napms(5000);
