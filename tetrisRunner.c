@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "tetris.h"
 #include "tetrisRunner.h"
 
@@ -5,6 +7,8 @@ int curBoard[BOARDSIZE];
 int curPiece[PIECE_LEN];
 int curPieceX = SPAWN_X;
 int curPieceY = SPAWN_Y;
+
+int gameOverRow = 0;
 
 int curRenderedBoard[BOARDSIZE];
 
@@ -98,3 +102,15 @@ enum gameEvent handleUserEvent(char c){
 
 }
 
+bool gameOverAnimation(){
+
+    if(gameOverRow == BOARD_Y){
+        gameOverRow = 0;
+        return true;
+    }
+
+    memset(&curRenderedBoard[BOARD_X * (15 - gameOverRow)], 0, BOARD_X * sizeof(int));
+    gameOverRow++;
+    return false;
+
+}

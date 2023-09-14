@@ -48,7 +48,12 @@ int main(){
         startedGame = 0;
     }
 
-    napms(5000);
+    while(!gameOverAnimation()){
+        drawBoard(curRenderedBoard);
+        napms(250);
+    }
+
+    napms(250);
     endwin();
 
     return 0;

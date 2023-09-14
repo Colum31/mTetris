@@ -9,5 +9,5 @@ extern int curRenderedBoard[BOARDSIZE];
 void initGame();
 bool handleTick();
 enum gameEvent handleUserEvent(char c);
-
+bool gameOverAnimation();
 #endif
