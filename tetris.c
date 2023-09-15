@@ -18,9 +18,11 @@ void initBoard(int *boardToInit){
     memset(boardToInit, 0, sizeof(int) * BOARDSIZE);
 }
 
-void getRandomPiece(int *dest){
-    int r = rand();
-    memcpy(dest, figs[r % NUM_SHAPES], PIECE_LEN * sizeof(int));
+enum shape getRandomPiece(int *dest){
+    int r = rand() % NUM_SHAPES;
+    memcpy(dest, figs[r], PIECE_LEN * sizeof(int));
+
+    return (enum shape) r;
 }
 
 void updateBoard(int *board, int *playerPiece, int pieceX, int pieceY){
@@ -50,7 +52,7 @@ void renderBoard(int *renderedBoard, int *boardToRender, int *pieceToRender, int
     }
 }
 
-enum boardAction handleUserInput(enum userRequest r, int *board, int *playerPiece, int pieceX, int pieceY){
+enum boardAction handleUserInput(enum userRequest r, int *board, int *playerPiece, int pieceX, int pieceY, enum shape pieceShape){
     
     int modifiedPiece[PIECE_LEN];
     memcpy(modifiedPiece, playerPiece, sizeof(int) * PIECE_LEN);
@@ -58,14 +60,14 @@ enum boardAction handleUserInput(enum userRequest r, int *board, int *playerPiec
     switch (r)
     {
     case requestRotateRight:
-        rotateRight(modifiedPiece, sizeof(int) * PIECE_LEN, TShape);
+        rotateRight(modifiedPiece, sizeof(int) * PIECE_LEN, pieceShape);
         if(checkMove(modifiedPiece, pieceX, pieceY, board)){
             memcpy(playerPiece, modifiedPiece, sizeof(int) * PIECE_LEN);
         }
         return redraw;
 
     case requestRotateLeft:
-        rotateLeft(modifiedPiece, sizeof(int) * PIECE_LEN, TShape);
+        rotateLeft(modifiedPiece, sizeof(int) * PIECE_LEN, pieceShape);
         if(checkMove(modifiedPiece, pieceX, pieceY, board)){
             memcpy(playerPiece, modifiedPiece, sizeof(int) * PIECE_LEN);
         }

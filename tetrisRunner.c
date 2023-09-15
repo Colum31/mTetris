@@ -8,13 +8,15 @@ int curPiece[PIECE_LEN];
 int curPieceX = SPAWN_X;
 int curPieceY = SPAWN_Y;
 
+enum shape curShape;
+
 int gameOverRow = 0;
 
 int curRenderedBoard[BOARDSIZE];
 
 
 void initNewPiece(){
-    getRandomPiece(curPiece);
+    curShape = getRandomPiece(curPiece);
     curPieceY = SPAWN_Y;
     curPieceX = SPAWN_X;
 }
@@ -80,7 +82,7 @@ enum gameEvent handleUserEvent(char c){
             return continueRound;
     }
 
-    enum boardAction ret = handleUserInput(req, curBoard, curPiece, curPieceX, curPieceY);
+    enum boardAction ret = handleUserInput(req, curBoard, curPiece, curPieceX, curPieceY, curShape);
 
     switch(ret){
 
