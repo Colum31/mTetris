@@ -33,7 +33,7 @@ void displayPlayerPiece(){
 
 bool handleTick(){
 
-    if(checkMove(curPiece, curPieceX, curPieceY + 1, curBoard)){
+    if(checkMove(curPiece, curPieceX, curPieceY + 1, PIECE_BOX_SIDE, curBoard)){
         curPieceY++;
         displayPlayerPiece();
         return true;

@@ -10,8 +10,8 @@ enum userRequest{requestLeft, requestRight, requestDrop, requestRotateRight, req
 enum boardAction{none, redraw, moveRight, moveLeft, dropOne, instantDrop};
 
 
-void rotateRight(int *dest, int len, enum shape curShape);
-void rotateLeft(int *dest, int len, enum shape curShape);
+void rotateRight(int *dest, int sideLen, enum shape curShape);
+void rotateLeft(int *dest, int sideLen, enum shape curShape);
 
 
 void initBoard(int *boardToInit);
@@ -24,7 +24,7 @@ enum boardAction handleUserInput(enum userRequest r, int *board, int *playerPiec
 
 bool checkSpawnPiece(int *pieceToSpawn, int *boardToSpawnIn);
 void renderBoard(int *renderedBoard, int *boardToRender, int *pieceToRender, int piecePosX, int piecePosY);
-bool checkMove(int *piece, int piecePosX, int piecePosY, int *boardToCheck);
+bool checkMove(int *piece, int piecePosX, int piecePosY, int sideLen, int *boardToCheck);
 
 
 #endif

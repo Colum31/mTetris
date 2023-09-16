@@ -32,7 +32,7 @@ void updateBoard(int *board, int *playerPiece, int pieceX, int pieceY){
 }
 
 bool checkSpawnPiece(int *pieceToSpawn, int *boardToSpawnIn){
-    return checkMove(pieceToSpawn, SPAWN_X, SPAWN_Y, boardToSpawnIn);
+    return checkMove(pieceToSpawn, SPAWN_X, SPAWN_Y, PIECE_BOX_SIDE, boardToSpawnIn);
 }
 
 void renderBoard(int *renderedBoard, int *boardToRender, int *pieceToRender, int piecePosX, int piecePosY){
@@ -60,26 +60,26 @@ enum boardAction handleUserInput(enum userRequest r, int *board, int *playerPiec
     switch (r)
     {
     case requestRotateRight:
-        rotateRight(modifiedPiece, sizeof(int) * PIECE_LEN, pieceShape);
-        if(checkMove(modifiedPiece, pieceX, pieceY, board)){
+        rotateRight(modifiedPiece, PIECE_BOX_SIDE, pieceShape);
+        if(checkMove(modifiedPiece, pieceX, pieceY, PIECE_BOX_SIDE, board)){
             memcpy(playerPiece, modifiedPiece, sizeof(int) * PIECE_LEN);
         }
         return redraw;
 
     case requestRotateLeft:
-        rotateLeft(modifiedPiece, sizeof(int) * PIECE_LEN, pieceShape);
-        if(checkMove(modifiedPiece, pieceX, pieceY, board)){
+        rotateLeft(modifiedPiece, PIECE_BOX_SIDE, pieceShape);
+        if(checkMove(modifiedPiece, pieceX, pieceY, PIECE_BOX_SIDE, board)){
             memcpy(playerPiece, modifiedPiece, sizeof(int) * PIECE_LEN);
         }
         return redraw;
 
     case requestRight:
-        if(checkMove(modifiedPiece, pieceX + 1, pieceY, board)){
+        if(checkMove(modifiedPiece, pieceX + 1, pieceY, PIECE_BOX_SIDE, board)){
             return moveRight;
         }
         return none;
     case requestLeft:
-        if(checkMove(modifiedPiece, pieceX - 1, pieceY, board)){
+        if(checkMove(modifiedPiece, pieceX - 1, pieceY, PIECE_BOX_SIDE, board)){
             return moveLeft;
         }
         return none;
@@ -94,16 +94,16 @@ enum boardAction handleUserInput(enum userRequest r, int *board, int *playerPiec
     return none;
 }
 
-bool checkMove(int *piece, int piecePosX, int piecePosY, int *boardToCheck){
+bool checkMove(int *piece, int piecePosX, int piecePosY, int sideLen, int *boardToCheck){
 
-    for(int i = 0; i < PIECE_LEN; i++){
+    for(int i = 0; i < sideLen * sideLen; i++){
 
         if(!piece[i]){
             continue;
         }
         
-        int blockX = i % PIECE_BOX_SIDE + piecePosX;
-        int blockY = i / PIECE_BOX_SIDE + piecePosY;
+        int blockX = i % sideLen + piecePosX;
+        int blockY = i / sideLen + piecePosY;
 
         if(blockX < 0 || blockX > BOARD_X - 1){
             return false;
@@ -123,7 +123,7 @@ bool checkMove(int *piece, int piecePosX, int piecePosY, int *boardToCheck){
     return true;
 }
 
-void rotateRight(int *dest, int len, enum shape curShape){
+void rotateRight(int *dest, int sideLen, enum shape curShape){
 
     int tmpShapeCopy[PIECE_LEN];
 
@@ -131,19 +131,19 @@ void rotateRight(int *dest, int len, enum shape curShape){
         return;
     }
 
-    memcpy(tmpShapeCopy, dest, len);
+    memcpy(tmpShapeCopy, dest, sideLen * sideLen * sizeof(int));
 
     int pos = 0;
 
-    for(int x = 0; x < PIECE_BOX_SIDE; x++){
-    	for(int y = PIECE_BOX_SIDE - 1; y >= 0; y--){
-    		dest[pos] = tmpShapeCopy[PIECE_BOX_SIDE * y + x];
+    for(int x = 0; x < sideLen; x++){
+    	for(int y = sideLen - 1; y >= 0; y--){
+    		dest[pos] = tmpShapeCopy[sideLen * y + x];
             pos++;
     	}
     }
 }
 
-void rotateLeft(int *dest, int len, enum shape curShape){
+void rotateLeft(int *dest, int sideLen, enum shape curShape){
 
     int tmpShapeCopy[PIECE_LEN];
 
@@ -151,13 +151,13 @@ void rotateLeft(int *dest, int len, enum shape curShape){
         return;
     }
 
-    memcpy(tmpShapeCopy, dest, len);
+    memcpy(tmpShapeCopy, dest, sideLen * sideLen * sizeof(int));
 
     int pos = 0;
 
-    for(int x = PIECE_BOX_SIDE - 1; x >= 0; x--){
-        for (int y = 0; y < PIECE_BOX_SIDE; y++){
-            dest[pos] = tmpShapeCopy[PIECE_BOX_SIDE * y + x];
+    for(int x = sideLen- 1; x >= 0; x--){
+        for (int y = 0; y < sideLen; y++){
+            dest[pos] = tmpShapeCopy[sideLen * y + x];
             pos++;
         }
     }
