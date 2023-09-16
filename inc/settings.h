@@ -8,7 +8,8 @@
 #define TICK_MS 750
 #define DROP_MS 100
 
-#define PIECE_LEN 9
+#define PIECE_BOX_SIDE 3
+#define PIECE_LEN (PIECE_BOX_SIDE * PIECE_BOX_SIDE)
 
 #define SPAWN_X (BOARD_X / 2) - 1
 #define SPAWN_Y 0

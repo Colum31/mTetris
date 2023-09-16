@@ -44,8 +44,8 @@ void renderBoard(int *renderedBoard, int *boardToRender, int *pieceToRender, int
             continue;
         }
 
-        int blockX = i % 3 + piecePosX;
-        int blockY = i / 3 + piecePosY;
+        int blockX = i % PIECE_BOX_SIDE + piecePosX;
+        int blockY = i / PIECE_BOX_SIDE + piecePosY;
         int boardPos = blockY * BOARD_X + blockX;
 
         renderedBoard[boardPos] = 1;
@@ -102,8 +102,8 @@ bool checkMove(int *piece, int piecePosX, int piecePosY, int *boardToCheck){
             continue;
         }
         
-        int blockX = i % 3 + piecePosX;
-        int blockY = i / 3 + piecePosY;
+        int blockX = i % PIECE_BOX_SIDE + piecePosX;
+        int blockY = i / PIECE_BOX_SIDE + piecePosY;
 
         if(blockX < 0 || blockX > BOARD_X - 1){
             return false;
@@ -135,9 +135,9 @@ void rotateRight(int *dest, int len, enum shape curShape){
 
     int pos = 0;
 
-    for(int x = 0; x < 3; x++){
-    	for(int y = 2; y >= 0; y--){
-    		dest[pos] = tmpShapeCopy[3*y + x];
+    for(int x = 0; x < PIECE_BOX_SIDE; x++){
+    	for(int y = PIECE_BOX_SIDE - 1; y >= 0; y--){
+    		dest[pos] = tmpShapeCopy[PIECE_BOX_SIDE * y + x];
             pos++;
     	}
     }
@@ -155,9 +155,9 @@ void rotateLeft(int *dest, int len, enum shape curShape){
 
     int pos = 0;
 
-    for(int x = 2; x >= 0; x--){
-        for (int y = 0; y < 3; y++){
-            dest[pos] = tmpShapeCopy[x + 3 * y];
+    for(int x = PIECE_BOX_SIDE - 1; x >= 0; x--){
+        for (int y = 0; y < PIECE_BOX_SIDE; y++){
+            dest[pos] = tmpShapeCopy[PIECE_BOX_SIDE * y + x];
             pos++;
         }
     }
@@ -165,7 +165,7 @@ void rotateLeft(int *dest, int len, enum shape curShape){
 
 void clearRows(int *boardToClear, int pieceY){
 
-    for(int y = pieceY; y < pieceY + 4 && y < BOARD_Y; y++){
+    for(int y = pieceY; y < pieceY + PIECE_BOX_SIDE + 1 && y < BOARD_Y; y++){
 
         int rowSet = 1;
         
