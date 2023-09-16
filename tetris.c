@@ -11,6 +11,7 @@ const int z[] = {1,1,0,0,1,1,0,0,0};
 const int s[] = {0,1,1,1,1,0,0,0,0};
 const int j[] = {1,1,1,0,0,1,0,0,0};
 const int l[] = {1,1,1,1,0,0,0,0,0};
+const int i[] = {0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0};
 
 const int *figs[NUM_SHAPES] = {square, t, z, s, j, l};
 
@@ -60,14 +61,14 @@ enum boardAction handleUserInput(enum userRequest r, int *board, int *playerPiec
     switch (r)
     {
     case requestRotateRight:
-        rotateRight(modifiedPiece, PIECE_BOX_SIDE, pieceShape);
+        rotateRight(modifiedPiece, pieceShape);
         if(checkMove(modifiedPiece, pieceX, pieceY, PIECE_BOX_SIDE, board)){
             memcpy(playerPiece, modifiedPiece, sizeof(int) * PIECE_LEN);
         }
         return redraw;
 
     case requestRotateLeft:
-        rotateLeft(modifiedPiece, PIECE_BOX_SIDE, pieceShape);
+        rotateLeft(modifiedPiece, pieceShape);
         if(checkMove(modifiedPiece, pieceX, pieceY, PIECE_BOX_SIDE, board)){
             memcpy(playerPiece, modifiedPiece, sizeof(int) * PIECE_LEN);
         }
@@ -123,17 +124,19 @@ bool checkMove(int *piece, int piecePosX, int piecePosY, int sideLen, int *board
     return true;
 }
 
-void rotateRight(int *dest, int sideLen, enum shape curShape){
+void rotateRight(int *dest, enum shape curShape){
 
     int tmpShapeCopy[PIECE_LEN];
+    int pos = 0;
+    int sideLen = 3;
 
     if(curShape == SquareShape){
         return;
+    } else if (curShape == IShape){
+        sideLen = 4;
     }
 
     memcpy(tmpShapeCopy, dest, sideLen * sideLen * sizeof(int));
-
-    int pos = 0;
 
     for(int x = 0; x < sideLen; x++){
     	for(int y = sideLen - 1; y >= 0; y--){
@@ -143,19 +146,21 @@ void rotateRight(int *dest, int sideLen, enum shape curShape){
     }
 }
 
-void rotateLeft(int *dest, int sideLen, enum shape curShape){
+void rotateLeft(int *dest, enum shape curShape){
 
     int tmpShapeCopy[PIECE_LEN];
+    int pos = 0;
+    int sideLen = 3;
 
     if(curShape == SquareShape){
         return;
+    } else if(curShape == IShape){
+        sideLen = 4;
     }
 
     memcpy(tmpShapeCopy, dest, sideLen * sideLen * sizeof(int));
 
-    int pos = 0;
-
-    for(int x = sideLen- 1; x >= 0; x--){
+    for(int x = sideLen - 1; x >= 0; x--){
         for (int y = 0; y < sideLen; y++){
             dest[pos] = tmpShapeCopy[sideLen * y + x];
             pos++;

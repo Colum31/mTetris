@@ -4,14 +4,14 @@
 #include <stdbool.h>
 #include "settings.h"
 
-enum shape{SquareShape, TShape, ZShape, SShape, JShape, LShape};
+enum shape{SquareShape, TShape, ZShape, SShape, JShape, LShape, IShape};
 
 enum userRequest{requestLeft, requestRight, requestDrop, requestRotateRight, requestRotateLeft};
 enum boardAction{none, redraw, moveRight, moveLeft, dropOne, instantDrop};
 
 
-void rotateRight(int *dest, int sideLen, enum shape curShape);
-void rotateLeft(int *dest, int sideLen, enum shape curShape);
+void rotateRight(int *dest, enum shape curShape);
+void rotateLeft(int *dest,  enum shape curShape);
 
 
 void initBoard(int *boardToInit);
