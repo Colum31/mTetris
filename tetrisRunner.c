@@ -4,7 +4,7 @@
 #include "tetrisRunner.h"
 
 int curBoard[BOARDSIZE];
-int curPiece[PIECE_LEN];
+int curPiece[MAX_PIECE_LEN];
 int curPieceX = SPAWN_X;
 int curPieceY = SPAWN_Y;
 
@@ -28,18 +28,18 @@ void initGame(){
 }
 
 void displayPlayerPiece(){
-    renderBoard(curRenderedBoard, curBoard, curPiece, curPieceX, curPieceY);
+    renderBoard(curRenderedBoard, curBoard, curPiece, curPieceX, curPieceY, curShape);
 }
 
 bool handleTick(){
 
-    if(checkMove(curPiece, curPieceX, curPieceY + 1, PIECE_BOX_SIDE, curBoard)){
+    if(checkMove(curPiece, curPieceX, curPieceY + 1, curShape, curBoard)){
         curPieceY++;
         displayPlayerPiece();
         return true;
     }
 
-    updateBoard(curBoard, curPiece, curPieceX, curPieceY);
+    updateBoard(curBoard, curPiece, curPieceX, curPieceY, curShape);
     clearRows(curBoard, curPieceY);
 
     initNewPiece();
