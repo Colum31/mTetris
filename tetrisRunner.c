@@ -111,8 +111,7 @@ bool gameOverAnimation(){
         return true;
     }
 
-    memset(&curRenderedBoard[BOARD_X * (15 - gameOverRow)], 0, BOARD_X * sizeof(int));
+    memset(&curRenderedBoard[BOARD_X * (BOARD_Y - gameOverRow - 1)], 0, BOARD_X * sizeof(int));
     gameOverRow++;
     return false;
-
 }

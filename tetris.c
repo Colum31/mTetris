@@ -125,7 +125,7 @@ bool checkMove(int *piece, int piecePosX, int piecePosY, int *boardToCheck){
 
 void rotateRight(int *dest, int len, enum shape curShape){
 
-    int tmpShapeCopy[9];
+    int tmpShapeCopy[PIECE_LEN];
 
     if(curShape == SquareShape){
         return;
@@ -133,20 +133,19 @@ void rotateRight(int *dest, int len, enum shape curShape){
 
     memcpy(tmpShapeCopy, dest, len);
 
-    dest[2] = tmpShapeCopy[0];
-    dest[8] = tmpShapeCopy[2];
-    dest[6] = tmpShapeCopy[8];
-    dest[0] = tmpShapeCopy[6];
+    int pos = 0;
 
-    dest[1] = tmpShapeCopy[3];
-    dest[5] = tmpShapeCopy[1];
-    dest[7] = tmpShapeCopy[5];
-    dest[3] = tmpShapeCopy[7];          
+    for(int x = 0; x < 3; x++){
+    	for(int y = 2; y >= 0; y--){
+    		dest[pos] = tmpShapeCopy[3*y + x];
+            pos++;
+    	}
+    }
 }
 
 void rotateLeft(int *dest, int len, enum shape curShape){
 
-    int tmpShapeCopy[9];
+    int tmpShapeCopy[PIECE_LEN];
 
     if(curShape == SquareShape){
         return;
@@ -154,15 +153,14 @@ void rotateLeft(int *dest, int len, enum shape curShape){
 
     memcpy(tmpShapeCopy, dest, len);
 
-    dest[0] = tmpShapeCopy[2];
-    dest[2] = tmpShapeCopy[8];
-    dest[8] = tmpShapeCopy[6];
-    dest[6] = tmpShapeCopy[0];
+    int pos = 0;
 
-    dest[7] = tmpShapeCopy[3];
-    dest[3] = tmpShapeCopy[1];
-    dest[1] = tmpShapeCopy[5];
-    dest[5] = tmpShapeCopy[7];          
+    for(int x = 2; x >= 0; x--){
+        for (int y = 0; y < 3; y++){
+            dest[pos] = tmpShapeCopy[x + 3 * y];
+            pos++;
+        }
+    }
 }
 
 void clearRows(int *boardToClear, int pieceY){
