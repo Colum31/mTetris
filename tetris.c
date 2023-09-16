@@ -32,8 +32,8 @@ void updateBoard(int *board, int *playerPiece, int pieceX, int pieceY){
     memcpy(board, renderedBoard, sizeof(int) * BOARDSIZE);
 }
 
-bool checkSpawnPiece(int *pieceToSpawn, int *boardToSpawnIn){
-    return checkMove(pieceToSpawn, SPAWN_X, SPAWN_Y, PIECE_BOX_SIDE, boardToSpawnIn);
+bool checkSpawnPiece(int *pieceToSpawn, int *boardToSpawnIn, enum shape pieceShape){
+    return checkMove(pieceToSpawn, SPAWN_X, SPAWN_Y, pieceShape, boardToSpawnIn);
 }
 
 void renderBoard(int *renderedBoard, int *boardToRender, int *pieceToRender, int piecePosX, int piecePosY){
@@ -62,25 +62,25 @@ enum boardAction handleUserInput(enum userRequest r, int *board, int *playerPiec
     {
     case requestRotateRight:
         rotateRight(modifiedPiece, pieceShape);
-        if(checkMove(modifiedPiece, pieceX, pieceY, PIECE_BOX_SIDE, board)){
+        if(checkMove(modifiedPiece, pieceX, pieceY, pieceShape, board)){
             memcpy(playerPiece, modifiedPiece, sizeof(int) * PIECE_LEN);
         }
         return redraw;
 
     case requestRotateLeft:
         rotateLeft(modifiedPiece, pieceShape);
-        if(checkMove(modifiedPiece, pieceX, pieceY, PIECE_BOX_SIDE, board)){
+        if(checkMove(modifiedPiece, pieceX, pieceY, pieceShape, board)){
             memcpy(playerPiece, modifiedPiece, sizeof(int) * PIECE_LEN);
         }
         return redraw;
 
     case requestRight:
-        if(checkMove(modifiedPiece, pieceX + 1, pieceY, PIECE_BOX_SIDE, board)){
+        if(checkMove(modifiedPiece, pieceX + 1, pieceY, pieceShape, board)){
             return moveRight;
         }
         return none;
     case requestLeft:
-        if(checkMove(modifiedPiece, pieceX - 1, pieceY, PIECE_BOX_SIDE, board)){
+        if(checkMove(modifiedPiece, pieceX - 1, pieceY, pieceShape, board)){
             return moveLeft;
         }
         return none;
@@ -95,16 +95,24 @@ enum boardAction handleUserInput(enum userRequest r, int *board, int *playerPiec
     return none;
 }
 
-bool checkMove(int *piece, int piecePosX, int piecePosY, int sideLen, int *boardToCheck){
+bool checkMove(int *piece, int piecePosX, int piecePosY, enum shape pieceShape, int *boardToCheck){
+
+    int sideLen = 3;
+
+    if(pieceShape == IShape){
+        sideLen = 4;
+    }
+
 
     for(int i = 0; i < sideLen * sideLen; i++){
+
+        int blockX = i % sideLen + piecePosX;
+        int blockY = i / sideLen + piecePosY;
+        int boardPos = blockY * BOARD_X + blockX;
 
         if(!piece[i]){
             continue;
         }
-        
-        int blockX = i % sideLen + piecePosX;
-        int blockY = i / sideLen + piecePosY;
 
         if(blockX < 0 || blockX > BOARD_X - 1){
             return false;
@@ -113,8 +121,6 @@ bool checkMove(int *piece, int piecePosX, int piecePosY, int sideLen, int *board
         if(blockY < 0 || blockY > BOARD_Y - 1){
             return false;
         }
-
-        int boardPos = blockY * BOARD_X + blockX;
 
         if(boardToCheck[boardPos]){
             return false;

@@ -42,13 +42,13 @@ bool handleTick(){
     updateBoard(curBoard, curPiece, curPieceX, curPieceY);
     clearRows(curBoard, curPieceY);
 
+    initNewPiece();
 
-    if(!checkSpawnPiece(curPiece, curBoard)){
+    if(!checkSpawnPiece(curPiece, curBoard, curShape)){
         displayPlayerPiece();
         return false;
     }
 
-    initNewPiece();
     displayPlayerPiece();
     return true;
 }
