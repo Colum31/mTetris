@@ -15,10 +15,6 @@ const int i[] = {0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0};
 
 const int *figs[NUM_SHAPES] = {square, t, z, s, j, l, i};
 
-void initBoard(int *boardToInit){
-    memset(boardToInit, 0, sizeof(int) * BOARDSIZE);
-}
-
 int pieceLenByShape(enum shape pieceShape){
     if(pieceShape == IShape){
         return I_PIECE_LEN;
@@ -33,18 +29,25 @@ int sideLenByShape(enum shape pieceShape){
     return DEFAULT_BOX_SIDE;   
 }
 
-enum shape getRandomPiece(int *dest){
+
+void initBoard(int *boardToInit){
+    memset(boardToInit, 0, sizeof(int) * BOARDSIZE);
+}
+
+void initRandomPiece(struct pieceInfo *pieceToInit){
     int shapeNum = rand() % NUM_SHAPES;
     enum shape shapeType = shapeNum;
 
-    memcpy(dest, figs[shapeNum], pieceLenByShape(shapeType) * sizeof(int));
+    memcpy(pieceToInit->piece, figs[shapeNum], pieceLenByShape(shapeType) * sizeof(int));
+    pieceToInit->pieceShape = shapeType;
 
-    return shapeType;
+    pieceToInit->pieceX = SPAWN_X;
+    pieceToInit->pieceY = SPAWN_Y;
 }
 
-void updateBoard(int *board, int *playerPiece, int pieceX, int pieceY, enum shape pieceShape){
+void updateBoard(int *board, struct pieceInfo *playerPiece){
     int renderedBoard[BOARDSIZE];
-    renderBoard(renderedBoard, board, playerPiece, pieceX, pieceY, pieceShape);
+    renderBoard(renderedBoard, board, playerPiece);
     memcpy(board, renderedBoard, sizeof(int) * BOARDSIZE);
 }
 
@@ -52,56 +55,60 @@ bool checkSpawnPiece(int *pieceToSpawn, int *boardToSpawnIn, enum shape pieceSha
     return checkMove(pieceToSpawn, SPAWN_X, SPAWN_Y, pieceShape, boardToSpawnIn);
 }
 
-void renderBoard(int *renderedBoard, int *boardToRender, int *pieceToRender, int piecePosX, int piecePosY, enum shape pieceShape){
+void renderBoard(int *renderedBoard, int *boardToRender, struct pieceInfo *pieceToRender){
 
-    int sideLen = sideLenByShape(pieceShape);
-    int pieceLen = pieceLenByShape(pieceShape);
+    int sideLen = sideLenByShape(pieceToRender->pieceShape);
+    int pieceLen = pieceLenByShape(pieceToRender->pieceShape);
 
     memcpy(renderedBoard, boardToRender, sizeof(int) * BOARDSIZE);
 
         for(int i = 0; i < pieceLen; i++){
-        if(!pieceToRender[i]){
+        if(!(pieceToRender->piece[i])){
             continue;
         }
 
-        int blockX = i % sideLen + piecePosX;
-        int blockY = i / sideLen + piecePosY;
+        int blockX = i % sideLen + pieceToRender->pieceX;
+        int blockY = i / sideLen + pieceToRender->pieceY;
         int boardPos = blockY * BOARD_X + blockX;
 
         renderedBoard[boardPos] = 1;
     }
 }
 
-enum boardAction handleUserInput(enum userRequest r, int *board, int *playerPiece, int pieceX, int pieceY, enum shape pieceShape){
+enum boardAction handleUserInput(enum userRequest r, int *board, struct pieceInfo *playerPiece){
     
-    int pieceLen = pieceLenByShape(pieceShape);
+    int pieceLen = pieceLenByShape(playerPiece->pieceShape);
     int modifiedPiece[MAX_PIECE_LEN];
 
-    memcpy(modifiedPiece, playerPiece, sizeof(int) * pieceLen);
+    int pieceX = playerPiece->pieceX;
+    int pieceY = playerPiece->pieceY;
+    enum shape pieceShape = playerPiece->pieceShape;
+
+    memcpy(modifiedPiece, playerPiece->piece, sizeof(int) * pieceLen);
 
     switch (r)
     {
     case requestRotateRight:
         rotateRight(modifiedPiece, pieceShape);
         if(checkMove(modifiedPiece, pieceX, pieceY, pieceShape, board)){
-            memcpy(playerPiece, modifiedPiece, sizeof(int) * pieceLen);
+            memcpy(playerPiece->piece, modifiedPiece, sizeof(int) * pieceLen);
         }
         return redraw;
 
     case requestRotateLeft:
         rotateLeft(modifiedPiece, pieceShape);
         if(checkMove(modifiedPiece, pieceX, pieceY, pieceShape, board)){
-            memcpy(playerPiece, modifiedPiece, sizeof(int) * pieceLen);
+            memcpy(playerPiece->piece, modifiedPiece, sizeof(int) * pieceLen);
         }
         return redraw;
 
     case requestRight:
-        if(checkMove(modifiedPiece, pieceX + 1, pieceY, pieceShape, board)){
+        if(checkMove(playerPiece->piece, pieceX + 1, pieceY, pieceShape, board)){
             return moveRight;
         }
         return none;
     case requestLeft:
-        if(checkMove(modifiedPiece, pieceX - 1, pieceY, pieceShape, board)){
+        if(checkMove(playerPiece->piece, pieceX - 1, pieceY, pieceShape, board)){
             return moveLeft;
         }
         return none;
@@ -152,7 +159,7 @@ void rotateRight(int *dest, enum shape curShape){
     int pos = 0;
     int sideLen = sideLenByShape(curShape);
 
-    memcpy(tmpShapeCopy, dest, sideLen * sideLen * sizeof(int));
+    memcpy(tmpShapeCopy, dest, pieceLenByShape(curShape) * sizeof(int));
 
     for(int x = 0; x < sideLen; x++){
     	for(int y = sideLen - 1; y >= 0; y--){
@@ -168,7 +175,7 @@ void rotateLeft(int *dest, enum shape curShape){
     int pos = 0;
     int sideLen = sideLenByShape(curShape);
 
-    memcpy(tmpShapeCopy, dest, sideLen * sideLen * sizeof(int));
+    memcpy(tmpShapeCopy, dest, pieceLenByShape(curShape) * sizeof(int));
 
     for(int x = sideLen - 1; x >= 0; x--){
         for (int y = 0; y < sideLen; y++){

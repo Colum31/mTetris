@@ -3,49 +3,39 @@
 #include "tetris.h"
 #include "tetrisRunner.h"
 
+struct pieceInfo piece;
+
 int curBoard[BOARDSIZE];
-int curPiece[MAX_PIECE_LEN];
-int curPieceX = SPAWN_X;
-int curPieceY = SPAWN_Y;
-
-enum shape curShape;
-
-int gameOverRow = 0;
-
 int curRenderedBoard[BOARDSIZE];
 
-
-void initNewPiece(){
-    curShape = getRandomPiece(curPiece);
-    curPieceY = SPAWN_Y;
-    curPieceX = SPAWN_X;
-}
+int gameOverRow = 0;
 
 void initGame(){
     initBoard(curBoard);
     initBoard(curRenderedBoard);
-    initNewPiece();
-    renderBoard(curRenderedBoard, curBoard, curPiece, curPieceX, curPieceY, curShape);
+    initRandomPiece(&piece);
+    
+    renderBoard(curRenderedBoard, curBoard, &piece);
 }
 
 void displayPlayerPiece(){
-    renderBoard(curRenderedBoard, curBoard, curPiece, curPieceX, curPieceY, curShape);
+    renderBoard(curRenderedBoard, curBoard, &piece);
 }
 
 bool handleTick(){
 
-    if(checkMove(curPiece, curPieceX, curPieceY + 1, curShape, curBoard)){
-        curPieceY++;
+    if(checkMove(piece.piece, piece.pieceX, piece.pieceY + 1, piece.pieceShape, curBoard)){
+        piece.pieceY++;
         displayPlayerPiece();
         return true;
     }
 
-    updateBoard(curBoard, curPiece, curPieceX, curPieceY, curShape);
-    clearRows(curBoard, curPieceY);
+    updateBoard(curBoard, &piece);
+    clearRows(curBoard, piece.pieceY);
 
-    initNewPiece();
+    initRandomPiece(&piece);
 
-    if(!checkSpawnPiece(curPiece, curBoard, curShape)){
+    if(!checkSpawnPiece(piece.piece, curBoard, piece.pieceShape)){
         displayPlayerPiece();
         return false;
     }
@@ -83,17 +73,17 @@ enum gameEvent handleUserEvent(char c){
             return continueRound;
     }
 
-    enum boardAction ret = handleUserInput(req, curBoard, curPiece, curPieceX, curPieceY, curShape);
+    enum boardAction ret = handleUserInput(req, curBoard, &piece);
 
     switch(ret){
 
         case moveRight:
-            curPieceX++;
-             displayPlayerPiece();
+            piece.pieceX++;
+            displayPlayerPiece();
             return continueRound;
         case moveLeft:
-            curPieceX--;
-             displayPlayerPiece();
+            piece.pieceX--;
+            displayPlayerPiece();
             return continueRound;
         case dropOne:
             displayPlayerPiece();
