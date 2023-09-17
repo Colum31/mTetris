@@ -7,6 +7,7 @@ int main(){
     initDisplay();
     initGame();
     saveTickTime();
+    drawBoard(curRenderedBoard);
 
     int startedGame = 1;
 
@@ -14,7 +15,6 @@ int main(){
 
     while(1){
         // main game loop
-        drawBoard(curRenderedBoard);
 
         if(startedGame == 0 && !handleTick()){
             break;
@@ -50,10 +50,9 @@ int main(){
 
     while(!gameOverAnimation()){
         drawBoard(curRenderedBoard);
-        napms(250);
+        napms(GAME_OVER_MS);
     }
 
-    napms(250);
     endwin();
 
     return 0;

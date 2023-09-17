@@ -6,7 +6,7 @@
 #define BOARDSIZE BOARD_X * BOARD_Y
 
 #define TICK_MS 750
-#define DROP_MS 100
+#define GAME_OVER_MS 100
 
 #define DEFAULT_BOX_SIDE 3
 #define I_PIECE_BOX_SIDE 4

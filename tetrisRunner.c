@@ -25,6 +25,7 @@ void initGame(){
     initBoard(curBoard);
     initBoard(curRenderedBoard);
     initNewPiece();
+    renderBoard(curRenderedBoard, curBoard, curPiece, curPieceX, curPieceY, curShape);
 }
 
 void displayPlayerPiece(){
