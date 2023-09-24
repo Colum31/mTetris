@@ -1,29 +1,17 @@
 INC_DIR=inc/
+CC=gcc
 CFLAGS=-c -Wall -g -I $(INC_DIR)
+BIN=tetris
 
-tetris: main.o tetris.o display.o timer.o tetrisRunner.o
-	cc -lncurses -o tetris main.o tetris.o display.o timer.o tetrisRunner.o
+$(BIN): main.o tetris.o display.o timer.o tetrisRunner.o
+	$(CC) -lncurses  $^ -o $@
 
 debug: main.o tetris.o display.o tetrisRunner.o timer.o
-	cc -lncurses -o tetris main.o tetris.o display.o timer.o tetrisRunner.o
+	$(CC) -lncurses  $^ -o tetris
 	gdb tetris
 
-main.o: main.c 
-	cc $(CFLAGS) main.c
-
-
-tetrisRunner.o: tetrisRunner.c
-	cc $(CFLAGS) tetrisRunner.c
-
-tetris.o: tetris.c
-	cc $(CFLAGS) tetris.c
-
-display.o: display.c
-	cc $(CFLAGS) display.c
-
-timer.o: timer.c
-	cc $(CFLAGS) timer.c
+%.o: %.c 
+	$(CC) $(CFLAGS) $^
 
 clean:
-	rm *.o
-	rm tetris
+	rm *.o $(BIN)
