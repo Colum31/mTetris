@@ -1,7 +1,7 @@
 #define _POSIX_C_SOURCE 199309L
 
 #include <time.h>
-#include "inc/settings.h"
+#include "settings.h"
 
 struct timespec lastTick;
 

@@ -1,5 +1,4 @@
-#include "inc/display.h"
-
+#include "display.h"
 
 void initDisplay(){
     initscr();

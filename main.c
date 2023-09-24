@@ -1,6 +1,6 @@
-#include "inc/tetrisRunner.h"
-#include "inc/display.h"
-#include "inc/timer.h"
+#include "tetrisRunner.h"
+#include "display.h"
+#include "timer.h"
 
 
 int main(){

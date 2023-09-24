@@ -1,17 +1,23 @@
-INC_DIR=inc/
+INC_DIRS=./display/include ./tetris/include ./timer/include .
+SRC_DIRS= ./display/src ./tetris/src ./timer/src .
+
 CC=gcc
-CFLAGS=-c -Wall -g -I $(INC_DIR)
-BIN=tetris
+DEPFLAGS=-MP -MD
+CFLAGS= -Wall -lncurses -g $(foreach D, $(INC_DIRS), -I$(D)) $(DEPFLAGS)
 
-$(BIN): main.o tetris.o display.o timer.o tetrisRunner.o
-	$(CC) -lncurses  $^ -o $@
+CFILES=$(foreach C, $(SRC_DIRS), $(wildcard $(C)/*.c))
 
-debug: main.o tetris.o display.o tetrisRunner.o timer.o
-	$(CC) -lncurses  $^ -o tetris
-	gdb tetris
+OBJECTS=$(patsubst %.c, %.o, $(CFILES))
+DEPFILES=$(patsubst %.c, %.d, $(CFILES))
 
-%.o: %.c 
-	$(CC) $(CFLAGS) $^
+BIN=tetrisOut
+
+$(BIN): $(OBJECTS)
+	$(CC) -lncurses -o $@ $^
+
+%.o:%.c 
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm *.o $(BIN)
+	rm $(OBJECTS) $(BIN)
+	rm $(DEPFILES)
