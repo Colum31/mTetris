@@ -21,3 +21,5 @@ $(BIN): $(OBJECTS)
 clean:
 	rm $(OBJECTS) $(BIN)
 	rm $(DEPFILES)
+
+-include $(DEPFILES)

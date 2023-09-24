@@ -1,4 +1,5 @@
 *.o
-tetris
+*.d
+tetrisOut
 *Test.c
 .vscode
