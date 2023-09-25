@@ -1,6 +1,36 @@
-#include "snek.h"
 #include <string.h>
 #include "settings.h"
+
+#include "snek.h"
+
+void initSnek(int *curSnek){
+
+    memset(curSnek, 0, BOARDSIZE * sizeof(int));
+
+    for(int i = 0; i < SNEK_SPAWN_LEN; i++){
+
+        int pos = SPAWN_Y * BOARD_X + SPAWN_X + i;
+        curSnek[pos] = 1;
+    }
+}
+
+int initFood(int *curSnek, int curSnekLen){
+    
+    int foodPos;
+
+    while(1){
+        foodPos = rand() % BOARDSIZE;
+
+        for(int i = 0; i < curSnekLen; i++){
+            if(curSnek[i] == foodPos){
+                continue;
+            }
+        }
+        break;
+
+    }
+    return foodPos;
+}
 
 int getRow(int pos){
     return pos / BOARD_X;
@@ -43,6 +73,48 @@ int nextPosLeft(int curPos){
     }
 
     return getRow(curPos) * BOARD_X + BOARD_X - 1;
+}
+
+int nextPos(int curPos, enum snekDirection dir){
+
+    switch (dir)
+    {
+    case snekUp:
+        return nextPosUp(curPos);
+    case snekDown:
+        return nextPosDown(curPos);
+    case snekRight:
+        return nextPosRight(curPos);
+    case snekLeft:
+        return nextPosLeft(curPos);
+    default:
+        return -1;
+    }
+
+}
+
+bool snekMove(int *curSnek, int curSnekLen, enum snekDirection dir){
+
+    int curSnekHeadPos = curSnek[0];
+    int nextSnekHeadPos = nextPos(curSnekHeadPos, dir);
+
+    // Schlange kann nicht durch sich selbst durch
+    if(nextSnekHeadPos == curSnek[1]){
+        return true;
+    }
+
+    memmove(++curSnek, curSnek, --curSnekLen);
+    curSnek[0] = nextSnekHeadPos;
+
+    for(int i = 4; i < curSnekLen; i++){
+        if(curSnek[i] == curSnek[0]){
+            // Game Over, Schlange beisst sich selbst
+            return false;
+        }
+    }
+
+    return true;
+   
 }
 
 void renderSnekBoard(int *board, int *snek, int snekLen, int foodPos){
