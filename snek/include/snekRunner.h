@@ -4,6 +4,6 @@
 #include "settings.h"
 
 void initSnekGame();
-bool handleUserSnek(char c);
-bool handleSnekTick();
+enum gameSignal handleUserSnek(char c);
+enum gameSignal handleSnekTick();
 #endif

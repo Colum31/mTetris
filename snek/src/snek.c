@@ -100,7 +100,7 @@ bool snekMove(int *curSnek, int curSnekLen, enum snekDirection dir){
 
     // Schlange kann nicht durch sich selbst durch
     if(nextSnekHeadPos == curSnek[1]){
-        return false;
+        return true;
     }
 
     memmove(++curSnek, curSnek, --curSnekLen);
@@ -109,12 +109,11 @@ bool snekMove(int *curSnek, int curSnekLen, enum snekDirection dir){
     for(int i = 4; i < curSnekLen; i++){
         if(curSnek[i] == nextSnekHeadPos){
             // Game Over, Schlange beisst sich selbst
-            return true;
+            return false;
         }
     }
 
-    return false;
-   
+    return true;
 }
 
 void renderSnekBoard(int *board, int *snek, int snekLen, int foodPos){

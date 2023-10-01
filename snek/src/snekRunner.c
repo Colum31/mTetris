@@ -23,38 +23,33 @@ void initSnekGame(){
     renderSnekBoard(curRenderedSnekBoard, curSnek, snekLen, foodPos);
 }
 
-bool handleUserSnek(char c){
+enum gameSignal handleUserSnek(char c){
     if(c < 91){
         c = c + 32;
     }
 
-    enum snekDirection dir;
-
     switch (c){
         case BINDING_UP:
-            dir = snekUp;
-            break;
+            lastSnekDir = snekUp;
+            return continueTimer;
         case BINDING_LEFT:
-            dir = snekLeft;
-            break;
+            lastSnekDir = snekLeft;
+            return continueTimer;
         case BINDING_RIGHT:
-            dir = snekRight;
-            break;
+            lastSnekDir = snekRight;
+            return continueTimer;
         case BINDING_DOWN:
-            dir = snekDown;
-            break;
+            lastSnekDir =snekDown;
+            return continueTimer;
         default:
-            return;
+            return continueTimer;
     }
-
-    if(dir == lastSnekDir){
-        return false;
-    }
-
-    return snekMove(curSnek, snekLen, dir);
 }
 
+enum gameSignal handleSnekTick(){
 
-bool handleSnekTick(){
-    return snekMove(curSnek, snekLen, lastSnekDir);
+    if(snekMove(curSnek, snekLen, lastSnekDir)){
+        return gameContinues;
+    }
+    return gameOver;
 }
