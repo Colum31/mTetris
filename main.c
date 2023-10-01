@@ -2,10 +2,13 @@
 #include "display.h"
 #include "timer.h"
 
+void (*initGame)(void) = &initTetrisGame;
+enum gameSignal (*handleTick)(void) = &handleTetrisTick;
+enum gameSignal (*handleUserEvent)(char) = &handleTetrisUserEvent; 
 
 int main(){
     initDisplay();
-    initGame();
+    (*initGame)();
     saveTickTime();
     drawBoard(curRenderedBoard);
 
@@ -16,7 +19,7 @@ int main(){
     while(1){
         // main game loop
 
-        if(startedGame == 0 && !handleTick()){
+        if(startedGame == 0 && (*handleTick)() == gameOver){
             break;
         }
 
@@ -33,7 +36,7 @@ int main(){
                 break;
             }
 
-            if(handleUserEvent(c) == skipRound){
+            if((*handleUserEvent)(c) == skipTimer){
                 drawBoard(curRenderedBoard);
                 break;
             }

@@ -3,11 +3,10 @@
 
 #include "tetris.h"
 
-enum gameEvent{continueRound, skipRound};
 extern int curRenderedBoard[BOARDSIZE];
 
-void initGame();
-bool handleTick();
-enum gameEvent handleUserEvent(char c);
+void initTetrisGame();
+enum gameSignal handleTetrisTick();
+enum gameSignal handleTetrisUserEvent(char c);
 bool gameOverAnimation();
 #endif

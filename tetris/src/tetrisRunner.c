@@ -10,7 +10,7 @@ int curRenderedBoard[BOARDSIZE];
 
 int gameOverRow = 0;
 
-void initGame(){
+void initTetrisGame(){
     initBoard(curBoard);
     initBoard(curRenderedBoard);
     initRandomPiece(&piece);
@@ -22,12 +22,12 @@ void displayPlayerPiece(){
     renderBoard(curRenderedBoard, curBoard, &piece);
 }
 
-bool handleTick(){
+enum gameSignal handleTetrisTick(){
 
     if(checkMove(piece.piece, piece.pieceX, piece.pieceY + 1, piece.pieceShape, curBoard)){
         piece.pieceY++;
         displayPlayerPiece();
-        return true;
+        return gameContinues;
     }
 
     updateBoard(curBoard, &piece);
@@ -37,15 +37,15 @@ bool handleTick(){
 
     if(!checkSpawnPiece(piece.piece, curBoard, piece.pieceShape)){
         displayPlayerPiece();
-        return false;
+        return gameOver;
     }
 
     displayPlayerPiece();
-    return true;
+    return gameContinues;
 }
 
 
-enum gameEvent handleUserEvent(char c){
+enum gameSignal handleTetrisUserEvent(char c){
 
     if(c < 91){
         c = c + 32;
@@ -70,7 +70,7 @@ enum gameEvent handleUserEvent(char c){
             req = requestRotateRight;
             break;
         default:
-            return continueRound;
+            return continueTimer;
     }
 
     enum boardAction ret = handleUserInput(req, curBoard, &piece);
@@ -80,17 +80,17 @@ enum gameEvent handleUserEvent(char c){
         case moveRight:
             piece.pieceX++;
             displayPlayerPiece();
-            return continueRound;
+            return continueTimer;
         case moveLeft:
             piece.pieceX--;
             displayPlayerPiece();
-            return continueRound;
+            return continueTimer;
         case dropOne:
             displayPlayerPiece();
-            return skipRound;
+            return skipTimer;
         default:
             displayPlayerPiece();
-            return continueRound;
+            return continueTimer;
     }  
 
 }
