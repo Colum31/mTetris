@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdlib.h>
 #include "settings.h"
 
 #include "snek.h"
@@ -10,7 +11,7 @@ void initSnek(int *curSnek){
     for(int i = 0; i < SNEK_SPAWN_LEN; i++){
 
         int pos = SPAWN_Y * BOARD_X + SPAWN_X + i;
-        curSnek[pos] = 1;
+        curSnek[i] = pos;
     }
 }
 
@@ -103,7 +104,7 @@ bool snekMove(int *curSnek, int curSnekLen, enum snekDirection dir){
         return true;
     }
 
-    memmove(++curSnek, curSnek, --curSnekLen);
+    memmove(curSnek + 1, curSnek, --curSnekLen);
     curSnek[0] = nextSnekHeadPos;
 
     for(int i = 4; i < curSnekLen; i++){
@@ -120,7 +121,8 @@ void renderSnekBoard(int *board, int *snek, int snekLen, int foodPos){
     memset(board, 0, sizeof(int) * BOARDSIZE);
 
     for(int i = 0; i < snekLen; i++){
-        board[i] = 1;
+        int pos = snek[i];
+        board[pos] = 1;
     }
 
     board[foodPos] = 1;

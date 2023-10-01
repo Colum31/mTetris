@@ -49,7 +49,13 @@ enum gameSignal handleUserSnek(char c){
 enum gameSignal handleSnekTick(){
 
     if(snekMove(curSnek, snekLen, lastSnekDir)){
+        renderSnekBoard(curRenderedSnekBoard, curSnek, snekLen, foodPos);
         return gameContinues;
     }
+    renderSnekBoard(curRenderedSnekBoard, curSnek, snekLen, foodPos);
     return gameOver;
+}
+
+bool gameOverAnimationSnek(){
+    return true;
 }
