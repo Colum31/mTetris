@@ -20,8 +20,10 @@
 #define SPAWN_X (BOARD_X / 2) - 1
 #define SPAWN_Y 0
 
+#define BINDING_UP 'w'
 #define BINDING_LEFT 'a'
 #define BINDING_RIGHT 'd'
+#define BINDING_DOWN 's'
 #define BINDING_DROP 'f'
 #define BINDING_ROATATE_LEFT 'q'
 #define BINDING_ROTATE_RIGHT 'e'

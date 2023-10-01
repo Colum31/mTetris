@@ -100,20 +100,20 @@ bool snekMove(int *curSnek, int curSnekLen, enum snekDirection dir){
 
     // Schlange kann nicht durch sich selbst durch
     if(nextSnekHeadPos == curSnek[1]){
-        return true;
+        return false;
     }
 
     memmove(++curSnek, curSnek, --curSnekLen);
     curSnek[0] = nextSnekHeadPos;
 
     for(int i = 4; i < curSnekLen; i++){
-        if(curSnek[i] == curSnek[0]){
+        if(curSnek[i] == nextSnekHeadPos){
             // Game Over, Schlange beisst sich selbst
-            return false;
+            return true;
         }
     }
 
-    return true;
+    return false;
    
 }
 
