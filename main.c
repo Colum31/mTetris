@@ -1,16 +1,35 @@
-#include "tetrisRunner.h"
+#ifdef TETRIS
+    #include "tetrisRunner.h"
+#else
+    #include "snekRunner.h"
+#endif
+
 #include "display.h"
 #include "timer.h"
 
-void (*initGame)(void) = &initTetrisGame;
-enum gameSignal (*handleTick)(void) = &handleTetrisTick;
-enum gameSignal (*handleUserEvent)(char) = &handleTetrisUserEvent; 
+
+#ifdef TETRIS
+
+    #define GAMEBOARD curRenderedBoard
+    void (*initGame)(void) = &initTetrisGame;
+    enum gameSignal (*handleTick)(void) = &handleTetrisTick;
+    enum gameSignal (*handleUserEvent)(char) = &handleTetrisUserEvent;
+    bool (*gameOverAnimation)(void) = &gameOverTetrisAnimation;
+#else
+
+    #define GAMEBOARD curRenderedSnekBoard
+    void (*initGame)(void) = &initSnekGame;
+    enum gameSignal (*handleTick)(void) = &handleSnekTick;
+    enum gameSignal (*handleUserEvent)(char) = &handleUserSnek; 
+    bool (*gameOverAnimation)(void) = &gameOverAnimationSnek;
+
+#endif
 
 int main(){
     initDisplay();
     (*initGame)();
     saveTickTime();
-    drawBoard(curRenderedBoard);
+    drawBoard(GAMEBOARD);
 
     int startedGame = 1;
 
@@ -23,7 +42,7 @@ int main(){
             break;
         }
 
-        drawBoard(curRenderedBoard);
+        drawBoard(GAMEBOARD);
 
         timeout(TICK_MS);
         saveTickTime();
@@ -37,11 +56,11 @@ int main(){
             }
 
             if((*handleUserEvent)(c) == skipTimer){
-                drawBoard(curRenderedBoard);
+                drawBoard(GAMEBOARD);
                 break;
             }
 
-            drawBoard(curRenderedBoard);
+            drawBoard(GAMEBOARD);
 
             int remainingTime = checkTick();
             timeout(remainingTime);
@@ -51,8 +70,8 @@ int main(){
         startedGame = 0;
     }
 
-    while(!gameOverAnimation()){
-        drawBoard(curRenderedBoard);
+    while(!(*gameOverAnimation)()){
+        drawBoard(GAMEBOARD);
         napms(GAME_OVER_MS);
     }
 

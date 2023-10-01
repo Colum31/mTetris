@@ -95,7 +95,7 @@ enum gameSignal handleTetrisUserEvent(char c){
 
 }
 
-bool gameOverAnimation(){
+bool gameOverTetrisAnimation(){
 
     if(gameOverRow == BOARD_Y){
         gameOverRow = 0;

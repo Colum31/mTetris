@@ -8,5 +8,5 @@ extern int curRenderedBoard[BOARDSIZE];
 void initTetrisGame();
 enum gameSignal handleTetrisTick();
 enum gameSignal handleTetrisUserEvent(char c);
-bool gameOverAnimation();
+bool gameOverTetrisAnimation();
 #endif
