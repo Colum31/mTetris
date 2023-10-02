@@ -13,6 +13,7 @@ void initSnek(int *curSnekBoard);
 int initFood(int *curSnek, int curSnekLen);
 void renderSnekBoard(int *board, int *snek, int snekLen, int foodPos);
 bool snekMove(int *curSnek, int curSnekLen, enum snekDirection dir);
+enum snekDirection oppositeDirection(enum snekDirection dir);
 
 
 #endif

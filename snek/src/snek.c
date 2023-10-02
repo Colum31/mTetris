@@ -11,7 +11,7 @@ void initSnek(int *curSnek){
     for(int i = 0; i < SNEK_SPAWN_LEN; i++){
 
         int pos = SPAWN_Y * BOARD_X + SPAWN_X + i;
-        curSnek[i] = pos;
+        curSnek[SNEK_SPAWN_LEN - 1 - i] = pos;
     }
 }
 
@@ -91,7 +91,21 @@ int nextPos(int curPos, enum snekDirection dir){
     default:
         return -1;
     }
+}
 
+enum snekDirection oppositeDirection(enum snekDirection dir){
+    switch(dir){
+        case snekDown:
+            return snekUp;
+        case snekUp:
+            return snekDown;
+        case snekLeft:
+            return snekRight;
+        case snekRight:
+            return snekLeft;
+        default:
+            return snekUp;
+    }
 }
 
 bool snekMove(int *curSnek, int curSnekLen, enum snekDirection dir){

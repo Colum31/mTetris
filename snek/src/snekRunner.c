@@ -8,7 +8,8 @@ int curSnek[BOARDSIZE];
 int snekLen;
 
 int foodPos;
-enum snekDirection lastSnekDir;
+enum snekDirection curDir;
+enum snekDirection nextDir;
 
 
 void initSnekGame(){
@@ -18,7 +19,7 @@ void initSnekGame(){
 
     snekLen = SNEK_SPAWN_LEN;
     foodPos = initFood(curSnek, snekLen);
-    lastSnekDir = snekRight;
+    curDir = snekRight;
 
     renderSnekBoard(curRenderedSnekBoard, curSnek, snekLen, foodPos);
 }
@@ -28,31 +29,40 @@ enum gameSignal handleUserSnek(char c){
         c = c + 32;
     }
 
+    enum snekDirection dir = curDir;
+
     switch (c){
         case BINDING_UP:
-            lastSnekDir = snekUp;
-            return continueTimer;
+            dir = snekUp;
+            break;
         case BINDING_LEFT:
-            lastSnekDir = snekLeft;
-            return continueTimer;
+            dir = snekLeft;
+            break;
         case BINDING_RIGHT:
-            lastSnekDir = snekRight;
-            return continueTimer;
+            dir = snekRight;
+            break;
         case BINDING_DOWN:
-            lastSnekDir =snekDown;
-            return continueTimer;
-        default:
-            return continueTimer;
+            dir = snekDown;
+            break;
     }
+
+    if(dir != oppositeDirection(curDir)){
+        nextDir = dir;
+    }
+
+    return continueTimer;
 }
 
 enum gameSignal handleSnekTick(){
 
-    if(snekMove(curSnek, snekLen, lastSnekDir)){
-        renderSnekBoard(curRenderedSnekBoard, curSnek, snekLen, foodPos);
+    bool movePossible = snekMove(curSnek, snekLen, nextDir);
+    curDir = nextDir;
+    renderSnekBoard(curRenderedSnekBoard, curSnek, snekLen, foodPos);
+
+    if(movePossible){
         return gameContinues;
     }
-    renderSnekBoard(curRenderedSnekBoard, curSnek, snekLen, foodPos);
+
     return gameOver;
 }
 
