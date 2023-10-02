@@ -57,7 +57,7 @@ int nextPosDown(int curPos){
 }
 
 int nextPosRight(int curPos){
-    int simpleRight = curPos++;
+    int simpleRight = curPos + 1;
 
     if(getRow(curPos) == getRow(simpleRight)){
         return simpleRight;
@@ -67,7 +67,7 @@ int nextPosRight(int curPos){
 }
 
 int nextPosLeft(int curPos){
-    int simpleLeft = curPos--;
+    int simpleLeft = curPos - 1;
 
     if(getRow(curPos) == getRow(simpleLeft)){
         return simpleLeft;
@@ -104,7 +104,7 @@ bool snekMove(int *curSnek, int curSnekLen, enum snekDirection dir){
         return true;
     }
 
-    memmove(curSnek + 1, curSnek, --curSnekLen);
+    memmove(curSnek + 1, curSnek, (curSnekLen - 1) * sizeof(int));
     curSnek[0] = nextSnekHeadPos;
 
     for(int i = 4; i < curSnekLen; i++){
