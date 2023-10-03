@@ -5,7 +5,15 @@
 #define BOARD_Y 16
 #define BOARDSIZE BOARD_X * BOARD_Y
 
-#define TICK_MS 750
+#define TETRIS_TICK_MS 750
+#define SNEK_TICK_MS 200
+
+#ifdef TETRIS
+    #define TICK_MS TETRIS_TICK_MS
+#else
+   #define TICK_MS SNEK_TICK_MS 
+#endif
+
 #define GAME_OVER_MS 100
 
 #define DEFAULT_BOX_SIDE 3

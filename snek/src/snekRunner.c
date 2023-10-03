@@ -20,6 +20,7 @@ void initSnekGame(){
     snekLen = SNEK_SPAWN_LEN;
     foodPos = initFood(curSnek, snekLen);
     curDir = snekRight;
+    nextDir = snekRight;
 
     renderSnekBoard(curRenderedSnekBoard, curSnek, snekLen, foodPos);
 }
