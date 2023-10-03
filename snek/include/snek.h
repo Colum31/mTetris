@@ -12,7 +12,7 @@ enum snekDirection{snekUp, snekDown, snekRight, snekLeft};
 void initSnek(int *curSnekBoard);
 int initFood(int *curSnek, int curSnekLen);
 void renderSnekBoard(int *board, int *snek, int snekLen, int foodPos);
-bool snekMove(int *curSnek, int curSnekLen, enum snekDirection dir);
+bool snekMove(int *curSnek, int *curSnekLen, enum snekDirection dir, int *foodPos);
 enum snekDirection oppositeDirection(enum snekDirection dir);
 
 

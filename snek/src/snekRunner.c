@@ -55,7 +55,7 @@ enum gameSignal handleUserSnek(char c){
 
 enum gameSignal handleSnekTick(){
 
-    bool movePossible = snekMove(curSnek, snekLen, nextDir);
+    bool movePossible = snekMove(curSnek, &snekLen, nextDir, &foodPos);
     curDir = nextDir;
     renderSnekBoard(curRenderedSnekBoard, curSnek, snekLen, foodPos);
 

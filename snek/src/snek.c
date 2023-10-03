@@ -108,20 +108,27 @@ enum snekDirection oppositeDirection(enum snekDirection dir){
     }
 }
 
-bool snekMove(int *curSnek, int curSnekLen, enum snekDirection dir){
+bool snekMove(int *curSnek, int *curSnekLen, enum snekDirection dir, int *foodPos){
 
     int curSnekHeadPos = curSnek[0];
     int nextSnekHeadPos = nextPos(curSnekHeadPos, dir);
+    int snekTailPos = curSnek[*curSnekLen - 1];
 
     // Schlange kann nicht durch sich selbst durch
     if(nextSnekHeadPos == curSnek[1]){
         return true;
     }
 
-    memmove(curSnek + 1, curSnek, (curSnekLen - 1) * sizeof(int));
+    memmove(curSnek + 1, curSnek, (*curSnekLen - 1) * sizeof(int));
     curSnek[0] = nextSnekHeadPos;
 
-    for(int i = 4; i < curSnekLen; i++){
+    if(curSnek[0] == *foodPos){
+        curSnek[*curSnekLen] = snekTailPos;
+        *curSnekLen = *curSnekLen + 1;
+        *foodPos = initFood(curSnek, *curSnekLen);
+    }
+
+    for(int i = 4; i < *curSnekLen; i++){
         if(curSnek[i] == nextSnekHeadPos){
             // Game Over, Schlange beisst sich selbst
             return false;
