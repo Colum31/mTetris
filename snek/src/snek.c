@@ -18,19 +18,24 @@ void initSnek(int *curSnek){
 int initFood(int *curSnek, int curSnekLen){
     
     int foodPos;
+    int foundPos;
 
     while(1){
-        foodPos = rand() % BOARDSIZE;
+        foundPos = 1;
+        int rng = rand();
+        foodPos = rng % BOARDSIZE;
 
         for(int i = 0; i < curSnekLen; i++){
             if(curSnek[i] == foodPos){
-                continue;
+                foundPos = 0;
+                break;
             }
         }
-        break;
 
+        if(foundPos){
+            return foodPos;
+        }
     }
-    return foodPos;
 }
 
 int getRow(int pos){

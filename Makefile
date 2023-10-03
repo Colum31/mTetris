@@ -3,7 +3,7 @@ SRC_DIRS= ./display/src ./tetris/src ./timer/src  ./snek/src .
 
 CC=gcc
 DEPFLAGS=-MP -MD
-CFLAGS= -Wall -lncurses -g $(foreach D, $(INC_DIRS), -I$(D)) $(DEPFLAGS)
+CFLAGS= -Wall -lncurses -ggdb3 $(foreach D, $(INC_DIRS), -I$(D)) $(DEPFLAGS)
 
 CFILES=$(foreach C, $(SRC_DIRS), $(wildcard $(C)/*.c))
 

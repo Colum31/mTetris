@@ -3,7 +3,7 @@
 
 #define BOARD_X 8
 #define BOARD_Y 16
-#define BOARDSIZE BOARD_X * BOARD_Y
+#define BOARDSIZE (BOARD_X * BOARD_Y)
 
 #define TETRIS_TICK_MS 750
 #define SNEK_TICK_MS 200
