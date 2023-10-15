@@ -1,5 +1,6 @@
 #define _POSIX_C_SOURCE 199309L
 
+#include <time.h>
 #include "settings.h"
 
 long double diff_ms(struct timespec *start, struct timespec *end){
