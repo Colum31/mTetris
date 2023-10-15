@@ -3,7 +3,7 @@
 #include "snek.h"
 #include "snekRunner.h"
 
-int curRenderedSnekBoard[BOARDSIZE];
+int (*curRenderedSnekBoard)[BOARDSIZE];
 int curSnek[BOARDSIZE];
 int snekLen;
 
@@ -12,17 +12,18 @@ enum snekDirection curDir;
 enum snekDirection nextDir;
 
 
-void initSnekGame(){
+void initSnekGame(int (*boardPtr)[BOARDSIZE]){
 
     initSnek(curSnek);
-    memset(curRenderedSnekBoard, 0, BOARDSIZE * sizeof(int));
+    curRenderedSnekBoard = boardPtr;
+    memset(*curRenderedSnekBoard, 0, BOARDSIZE * sizeof(int));
 
     snekLen = SNEK_SPAWN_LEN;
     foodPos = initFood(curSnek, snekLen);
     curDir = snekRight;
     nextDir = snekRight;
 
-    renderSnekBoard(curRenderedSnekBoard, curSnek, snekLen, foodPos);
+    renderSnekBoard(*curRenderedSnekBoard, curSnek, snekLen, foodPos);
 }
 
 enum gameSignal handleUserSnek(char c){
@@ -58,7 +59,7 @@ enum gameSignal handleSnekTick(){
 
     bool movePossible = snekMove(curSnek, &snekLen, nextDir, &foodPos);
     curDir = nextDir;
-    renderSnekBoard(curRenderedSnekBoard, curSnek, snekLen, foodPos);
+    renderSnekBoard(*curRenderedSnekBoard, curSnek, snekLen, foodPos);
 
     if(movePossible){
         return gameContinues;

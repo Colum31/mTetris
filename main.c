@@ -1,68 +1,52 @@
-#ifdef TETRIS
-    #include "tetrisRunner.h"
-#else
-    #include "snekRunner.h"
-#endif
-
 #include "display.h"
 #include "timer.h"
+#include "gameWrapper.h"
 
 
-#ifdef TETRIS
-
-    #define GAMEBOARD curRenderedBoard
-    void (*initGame)(void) = &initTetrisGame;
-    enum gameSignal (*handleTick)(void) = &handleTetrisTick;
-    enum gameSignal (*handleUserEvent)(char) = &handleTetrisUserEvent;
-    bool (*gameOverAnimation)(void) = &gameOverTetrisAnimation;
-#else
-
-    #define GAMEBOARD curRenderedSnekBoard
-    void (*initGame)(void) = &initSnekGame;
-    enum gameSignal (*handleTick)(void) = &handleSnekTick;
-    enum gameSignal (*handleUserEvent)(char) = &handleUserSnek; 
-    bool (*gameOverAnimation)(void) = &gameOverAnimationSnek;
-
-#endif
+struct timespec lastTick;
 
 int main(){
     initDisplay();
-    (*initGame)();
-    saveTickTime();
-    drawBoard(GAMEBOARD);
+    saveTickTime(&lastTick);
+    initGameStructs();
+
+    curSelectedGame->initGame(&curGameBoard);
+    int curGameWaitTick = curSelectedGame->tickMs;
+
+    drawBoard(curGameBoard);
 
     int startedGame = 1;
 
-    timeout(TICK_MS);
+    timeout(curGameWaitTick);
 
     while(1){
         // main game loop
 
-        if(startedGame == 0 && (*handleTick)() == gameOver){
+        if(startedGame == 0 && curSelectedGame->handleTick() == gameOver){
             break;
         }
 
-        drawBoard(GAMEBOARD);
+        drawBoard(curGameBoard);
 
-        timeout(TICK_MS);
-        saveTickTime();
+        timeout(curGameWaitTick);
+        saveTickTime(&lastTick);
 
         while(1){
             char c = getch();
 
             if(c == ERR){
-                saveTickTime();
+                saveTickTime(&lastTick);
                 break;
             }
 
-            if((*handleUserEvent)(c) == skipTimer){
-                drawBoard(GAMEBOARD);
+            if(curSelectedGame->handlePlayerInput(c) == skipTimer){
+                drawBoard(curGameBoard);
                 break;
             }
 
-            drawBoard(GAMEBOARD);
+            drawBoard(curGameBoard);
 
-            int remainingTime = checkTick();
+            int remainingTime = checkTick(&lastTick, curGameWaitTick);
             timeout(remainingTime);
 
         }
@@ -70,8 +54,8 @@ int main(){
         startedGame = 0;
     }
 
-    while(!(*gameOverAnimation)()){
-        drawBoard(GAMEBOARD);
+    while(!curSelectedGame->gameOverAnimation()){
+        drawBoard(curGameBoard);
         napms(GAME_OVER_MS);
     }
 

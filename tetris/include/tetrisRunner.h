@@ -3,9 +3,7 @@
 
 #include "tetris.h"
 
-extern int curRenderedBoard[BOARDSIZE];
-
-void initTetrisGame();
+void initTetrisGame(int (*boardPtr)[BOARDSIZE]);
 enum gameSignal handleTetrisTick();
 enum gameSignal handleTetrisUserEvent(char c);
 bool gameOverTetrisAnimation();

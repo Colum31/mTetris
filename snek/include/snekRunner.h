@@ -4,9 +4,7 @@
 #include <stdbool.h>
 #include "settings.h"
 
-extern int curRenderedSnekBoard[BOARDSIZE];
-
-void initSnekGame();
+void initSnekGame(int (*boardPtr)[BOARDSIZE]);
 enum gameSignal handleUserSnek(char c);
 enum gameSignal handleSnekTick();
 bool gameOverAnimationSnek();

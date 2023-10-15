@@ -6,20 +6,20 @@
 struct pieceInfo piece;
 
 int curBoard[BOARDSIZE];
-int curRenderedBoard[BOARDSIZE];
+int (*curRenderedBoard)[BOARDSIZE];
 
 int gameOverRow = 0;
 
-void initTetrisGame(){
+void initTetrisGame(int (*boardPtr)[BOARDSIZE]){
     initBoard(curBoard);
-    initBoard(curRenderedBoard);
+
+    curRenderedBoard = boardPtr;
     initRandomPiece(&piece);
-    
-    renderBoard(curRenderedBoard, curBoard, &piece);
+    renderBoard(*curRenderedBoard, curBoard, &piece);
 }
 
 void displayPlayerPiece(){
-    renderBoard(curRenderedBoard, curBoard, &piece);
+    renderBoard(*curRenderedBoard, curBoard, &piece);
 }
 
 enum gameSignal handleTetrisTick(){
@@ -102,7 +102,7 @@ bool gameOverTetrisAnimation(){
         return true;
     }
 
-    memset(&curRenderedBoard[BOARD_X * (BOARD_Y - gameOverRow - 1)], 0, BOARD_X * sizeof(int));
+    memset( &(*curRenderedBoard)[BOARD_X * (BOARD_Y - gameOverRow - 1)], 0, BOARD_X * sizeof(int));
     gameOverRow++;
     return false;
 }

@@ -1,5 +1,5 @@
-INC_DIRS=./display/include ./tetris/include ./timer/include ./snek/include .
-SRC_DIRS= ./display/src ./tetris/src ./timer/src  ./snek/src .
+INC_DIRS=./display/include ./tetris/include ./timer/include ./snek/include ./gameWrapper/include .
+SRC_DIRS= ./display/src ./tetris/src ./timer/src  ./snek/src ./gameWrapper/src .
 
 CC=gcc
 DEPFLAGS=-MP -MD
@@ -10,15 +10,10 @@ CFILES=$(foreach C, $(SRC_DIRS), $(wildcard $(C)/*.c))
 OBJECTS=$(patsubst %.c, %.o, $(CFILES))
 DEPFILES=$(patsubst %.c, %.d, $(CFILES))
 
+BIN=games
 
-tetrisOut: CFLAGS += -DTETRIS
-tetrisOut: $(OBJECTS)
-	$(CC) -lncurses -o $@ $^
-
-
-snekOut: CFLAGS += -DSNEK
-snekOut: $(OBJECTS)
-	$(CC) -lncurses -o $@ $^
+all:$(OBJECTS)
+	$(CC) -lncurses -o $(BIN) $^
 
 %.o:%.c 
 	$(CC) $(CFLAGS) -c -o $@ $<
