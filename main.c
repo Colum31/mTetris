@@ -4,22 +4,25 @@
 
 struct timespec lastTick;
 struct game *curSelectedGame;
+int curGameWaitTick;
 int curGameBoard[BOARDSIZE];
+int startedGame;
+
+void loadNewGame(struct game *toLoad){
+    curSelectedGame = toLoad;
+    setGame(toLoad);
+
+    curGameWaitTick = toLoad->tickMs;
+    timeout(curGameWaitTick);
+
+    startedGame = 1;
+}
 
 int main(){
     initDisplay();
-    saveTickTime(&lastTick);
 
     curSelectedGame = initGameStructs(&curGameBoard);
-    setGame(curSelectedGame);
-
-    int curGameWaitTick = curSelectedGame->tickMs;
-
-    drawBoard(curGameBoard);
-
-    int startedGame = 1;
-
-    timeout(curGameWaitTick);
+    loadNewGame(curSelectedGame);
 
     while(1){
         // main game loop
