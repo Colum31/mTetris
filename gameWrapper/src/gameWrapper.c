@@ -10,14 +10,15 @@ bool (*gameOverAnimationFunctions[NUM_GAMES])(void) = {gameOverTetrisAnimation, 
 int gameTicks[NUM_GAMES] = {TETRIS_TICK_MS, SNEK_TICK_MS};
 
 struct game availableGames[NUM_GAMES];
-struct game *curSelectedGame;
-int curGameBoard[BOARDSIZE];
+int (*boardPtr)[BOARDSIZE];
 
 
-void initGameStructs(){
+struct game *initGameStructs(int (*curBoardPtr)[BOARDSIZE]){
     struct game *firstGame;
     struct game *curGame;
     struct game *prevGame;
+
+    boardPtr = curBoardPtr;
 
     for(int i = 0; i < NUM_GAMES; i++){
 
@@ -44,20 +45,22 @@ void initGameStructs(){
     curGame->nextGame = firstGame;
     firstGame->prevGame = curGame;
 
-    curSelectedGame = firstGame;
+    return firstGame;
 }
 
-void setPrevGame(){
-    curSelectedGame = curSelectedGame->prevGame;
-    curSelectedGame->initGame(&curGameBoard);
+struct game *setPrevGame(struct game *curGame){
+    struct game *prevGame = curGame->prevGame;
+    prevGame->initGame(boardPtr);
+    return prevGame;
 }
 
-void setNextGame(){
-    curSelectedGame = curSelectedGame->nextGame;
-    curSelectedGame->initGame(&curGameBoard);
+struct game *setNextGame(struct game *curGame){
+    struct game *nextGame = curGame->nextGame;
+    nextGame->initGame(boardPtr);
+    return nextGame;
 }
 
-void setGame(struct game *nextGame){
-    curSelectedGame = nextGame;
-    curSelectedGame->initGame(&curGameBoard);
+struct game *setGame(struct game *curGame){
+    curGame->initGame(boardPtr);
+    return curGame;
 }

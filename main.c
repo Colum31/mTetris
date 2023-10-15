@@ -2,15 +2,17 @@
 #include "timer.h"
 #include "gameWrapper.h"
 
-
 struct timespec lastTick;
+struct game *curSelectedGame;
+int curGameBoard[BOARDSIZE];
 
 int main(){
     initDisplay();
     saveTickTime(&lastTick);
-    initGameStructs();
 
-    curSelectedGame->initGame(&curGameBoard);
+    curSelectedGame = initGameStructs(&curGameBoard);
+    setGame(curSelectedGame);
+
     int curGameWaitTick = curSelectedGame->tickMs;
 
     drawBoard(curGameBoard);

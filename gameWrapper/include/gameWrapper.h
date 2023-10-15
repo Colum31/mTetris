@@ -10,9 +10,6 @@
 #define NUM_GAMES 2
 #define GAME_NAME_LEN 16
 
-extern struct game *curSelectedGame;
-extern int curGameBoard[BOARDSIZE];
-
 struct game{
     struct game *prevGame;
     char gameName[GAME_NAME_LEN];
@@ -24,9 +21,9 @@ struct game{
     struct game *nextGame;
 };
 
-void initGameStructs();
-void setPrevGame();
-void setNextGame();
-void setGame(struct game *nextGame);
+struct game* initGameStructs(int (*boardPtr)[BOARDSIZE]);
+struct game *setPrevGame(struct game *curGame);
+struct game *setNextGame(struct game *curGame);
+struct game *setGame(struct game *curGame);
 
 #endif
