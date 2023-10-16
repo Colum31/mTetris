@@ -5,37 +5,37 @@
 
 struct pieceInfo piece;
 
-int curBoard[BOARDSIZE];
-int (*curRenderedBoard)[BOARDSIZE];
+int curTetrisBoard[BOARDSIZE];
+int (*curRenderedTetrisBoard)[BOARDSIZE];
 
 int gameOverRow = 0;
 
 void initTetrisGame(int (*boardPtr)[BOARDSIZE]){
-    initBoard(curBoard);
+    initBoard(curTetrisBoard);
 
-    curRenderedBoard = boardPtr;
+    curRenderedTetrisBoard = boardPtr;
     initRandomPiece(&piece);
-    renderBoard(*curRenderedBoard, curBoard, &piece);
+    renderBoard(*curRenderedTetrisBoard, curTetrisBoard, &piece);
 }
 
 void displayPlayerPiece(){
-    renderBoard(*curRenderedBoard, curBoard, &piece);
+    renderBoard(*curRenderedTetrisBoard, curTetrisBoard, &piece);
 }
 
 enum gameSignal handleTetrisTick(){
 
-    if(checkMove(piece.piece, piece.pieceX, piece.pieceY + 1, piece.pieceShape, curBoard)){
+    if(checkMove(piece.piece, piece.pieceX, piece.pieceY + 1, piece.pieceShape, curTetrisBoard)){
         piece.pieceY++;
         displayPlayerPiece();
         return gameContinues;
     }
 
-    updateBoard(curBoard, &piece);
-    clearRows(curBoard, piece.pieceY);
+    updateBoard(curTetrisBoard, &piece);
+    clearRows(curTetrisBoard, piece.pieceY);
 
     initRandomPiece(&piece);
 
-    if(!checkSpawnPiece(piece.piece, curBoard, piece.pieceShape)){
+    if(!checkSpawnPiece(piece.piece, curTetrisBoard, piece.pieceShape)){
         displayPlayerPiece();
         return gameOver;
     }
@@ -73,7 +73,7 @@ enum gameSignal handleTetrisUserEvent(char c){
             return continueTimer;
     }
 
-    enum boardAction ret = handleUserInput(req, curBoard, &piece);
+    enum boardAction ret = handleUserInput(req, curTetrisBoard, &piece);
 
     switch(ret){
 
@@ -102,7 +102,7 @@ bool gameOverTetrisAnimation(){
         return true;
     }
 
-    memset( &(*curRenderedBoard)[BOARD_X * (BOARD_Y - gameOverRow - 1)], 0, BOARD_X * sizeof(int));
+    memset( &(*curRenderedTetrisBoard)[BOARD_X * (BOARD_Y - gameOverRow - 1)], 0, BOARD_X * sizeof(int));
     gameOverRow++;
     return false;
 }
