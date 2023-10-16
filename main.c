@@ -44,6 +44,11 @@ int main(){
                 break;
             }
 
+            if(c == BINDING_LOAD_NEW_GAME){
+                loadNewGame(curSelectedGame->nextGame);
+                break;
+            }
+
             if(curSelectedGame->handlePlayerInput(c) == skipTimer){
                 drawBoard(curGameBoard);
                 break;

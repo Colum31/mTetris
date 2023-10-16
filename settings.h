@@ -36,6 +36,8 @@
 #define BINDING_ROATATE_LEFT 'q'
 #define BINDING_ROTATE_RIGHT 'e'
 
+#define BINDING_LOAD_NEW_GAME 'k'
+
 enum gameSignal{continueTimer, skipTimer, gameOver, gameContinues};
 
 #endif
