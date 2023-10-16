@@ -155,6 +155,10 @@ bool checkMove(int *piece, int piecePosX, int piecePosY, enum shape pieceShape, 
 
 void rotateRight(int *dest, enum shape curShape){
 
+    if(curShape == SquareShape){
+        return;
+    }
+
     int tmpShapeCopy[MAX_PIECE_LEN];
     int pos = 0;
     int sideLen = sideLenByShape(curShape);
