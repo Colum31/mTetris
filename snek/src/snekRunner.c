@@ -12,6 +12,9 @@ enum snekDirection curDir;
 enum snekDirection nextDir;
 
 
+int gameOverBlinkCnt;
+int gameOverSnekPosCnt;
+
 void initSnekGame(int (*boardPtr)[BOARDSIZE]){
 
     initSnek(curSnek);
@@ -22,6 +25,9 @@ void initSnekGame(int (*boardPtr)[BOARDSIZE]){
     foodPos = initFood(curSnek, snekLen);
     curDir = snekRight;
     nextDir = snekRight;
+
+    gameOverBlinkCnt = 20;
+    gameOverSnekPosCnt = 0;
 
     renderSnekBoard(*curRenderedSnekBoard, curSnek, snekLen, foodPos);
 }
@@ -69,5 +75,36 @@ enum gameSignal handleSnekTick(){
 }
 
 bool gameOverAnimationSnek(){
+
+    // blink, where snek bit itself
+    if(gameOverBlinkCnt){
+
+        int snekHead = curSnek[0];
+
+        if(gameOverBlinkCnt % 2){
+            (*curRenderedSnekBoard)[snekHead] = 0;
+        }else{
+            (*curRenderedSnekBoard)[snekHead] = 1;
+        }
+
+        gameOverBlinkCnt--;
+        return false;
+    }
+
+    // degenerate snake
+    if(gameOverSnekPosCnt <= snekLen){
+        int curPos = curSnek[gameOverSnekPosCnt];
+        (*curRenderedSnekBoard)[curPos] = 0;
+        gameOverSnekPosCnt++;
+        return false;
+    }
+
+    // remove food
+    if(foodPos != -1){
+        (*curRenderedSnekBoard)[foodPos] = 0;
+        foodPos = -1;
+        return false;
+    }
+
     return true;
 }
