@@ -54,7 +54,7 @@ enum gameSignal handleTetrisUserEvent(char c){
     enum userRequest req;
 
     switch (c){
-        case BINDING_DROP:
+        case BINDING_DOWN:
             req = requestDrop;
             break;
         case BINDING_LEFT:

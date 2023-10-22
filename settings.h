@@ -32,7 +32,6 @@
 #define BINDING_LEFT 'a'
 #define BINDING_RIGHT 'd'
 #define BINDING_DOWN 's'
-#define BINDING_DROP 'f'
 #define BINDING_ROATATE_LEFT 'q'
 #define BINDING_ROTATE_RIGHT 'e'
 
