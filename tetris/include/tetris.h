@@ -13,7 +13,7 @@ struct pieceInfo{
     enum shape pieceShape;
 };
 
-enum userRequest{requestLeft, requestRight, requestDrop, requestRotateRight, requestRotateLeft};
+enum userRequest{requestLeft, requestRight, requestDrop, requestRotateRight, requestRotateLeft, requestInstantDrop};
 enum boardAction{none, redraw, moveRight, moveLeft, dropOne, instantDrop};
 
 

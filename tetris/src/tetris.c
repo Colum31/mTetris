@@ -115,6 +115,18 @@ enum boardAction handleUserInput(enum userRequest r, int *board, struct pieceInf
 
     case requestDrop:
         return dropOne;
+    
+    case requestInstantDrop:
+        int yOffset = 0;
+        while(1){
+            if(!checkMove(playerPiece->piece, pieceX, pieceY + yOffset + 1, pieceShape, board)){
+                playerPiece->pieceY += yOffset;
+                break;
+            }
+
+            yOffset++;
+        }
+        return instantDrop;
 
     default:
         break;

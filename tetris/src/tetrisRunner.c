@@ -69,6 +69,9 @@ enum gameSignal handleTetrisUserEvent(char c){
         case BINDING_ROTATE_RIGHT:
             req = requestRotateRight;
             break;
+        case BINDING_INSTANT_DROP:
+            req = requestInstantDrop;
+            break;
         default:
             return continueTimer;
     }
@@ -85,6 +88,7 @@ enum gameSignal handleTetrisUserEvent(char c){
             piece.pieceX--;
             displayPlayerPiece();
             return continueTimer;
+        case instantDrop:
         case dropOne:
             displayPlayerPiece();
             return skipTimer;
