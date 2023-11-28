@@ -84,6 +84,8 @@ enum boardAction handleUserInput(enum userRequest r, int *board, struct pieceInf
     int pieceY = playerPiece->pieceY;
     enum shape pieceShape = playerPiece->pieceShape;
 
+    int yOffset = 0;
+
     memcpy(modifiedPiece, playerPiece->piece, sizeof(int) * pieceLen);
 
     switch (r)
@@ -117,7 +119,6 @@ enum boardAction handleUserInput(enum userRequest r, int *board, struct pieceInf
         return dropOne;
     
     case requestInstantDrop:
-        int yOffset = 0;
         while(1){
             if(!checkMove(playerPiece->piece, pieceX, pieceY + yOffset + 1, pieceShape, board)){
                 playerPiece->pieceY += yOffset;

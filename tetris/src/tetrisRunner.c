@@ -69,7 +69,7 @@ enum gameSignal handleTetrisUserEvent(char c){
         case BINDING_ROTATE_RIGHT:
             req = requestRotateRight;
             break;
-        case BINDING_INSTANT_DROP:
+        case BINDING_UP:
             req = requestInstantDrop;
             break;
         default:
