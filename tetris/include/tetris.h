@@ -30,7 +30,7 @@ void clearRows(int *boardToClear, int pieceY);
 enum boardAction handleUserInput(enum userRequest r, int *board, struct pieceInfo *playerPiece);
 
 bool checkSpawnPiece(int *pieceToSpawn, int *boardToSpawnIn, enum shape pieceShape);
-void renderBoard(int *renderedBoard, int *boardToRender, struct pieceInfo *pieceToRender);
+void renderBoard(int *renderedBoard, int *boardToRender, struct pieceInfo *pieceToRender, bool substract);
 bool checkMove(int *piece, int piecePosX, int piecePosY, enum shape pieceShape, int *boardToCheck);
 
 

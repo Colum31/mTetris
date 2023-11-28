@@ -47,7 +47,7 @@ void initRandomPiece(struct pieceInfo *pieceToInit){
 
 void updateBoard(int *board, struct pieceInfo *playerPiece){
     int renderedBoard[BOARDSIZE];
-    renderBoard(renderedBoard, board, playerPiece);
+    renderBoard(renderedBoard, board, playerPiece, false);
     memcpy(board, renderedBoard, sizeof(int) * BOARDSIZE);
 }
 
@@ -55,7 +55,7 @@ bool checkSpawnPiece(int *pieceToSpawn, int *boardToSpawnIn, enum shape pieceSha
     return checkMove(pieceToSpawn, SPAWN_X, SPAWN_Y, pieceShape, boardToSpawnIn);
 }
 
-void renderBoard(int *renderedBoard, int *boardToRender, struct pieceInfo *pieceToRender){
+void renderBoard(int *renderedBoard, int *boardToRender, struct pieceInfo *pieceToRender, bool substract){
 
     int sideLen = sideLenByShape(pieceToRender->pieceShape);
     int pieceLen = pieceLenByShape(pieceToRender->pieceShape);
@@ -71,7 +71,11 @@ void renderBoard(int *renderedBoard, int *boardToRender, struct pieceInfo *piece
         int blockY = i / sideLen + pieceToRender->pieceY;
         int boardPos = blockY * BOARD_X + blockX;
 
-        renderedBoard[boardPos] = 1;
+        if(substract){
+            renderedBoard[boardPos] = 0;
+        }else{
+            renderedBoard[boardPos] = 1;
+        }
     }
 }
 

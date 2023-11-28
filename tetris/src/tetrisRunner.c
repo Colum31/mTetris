@@ -9,17 +9,19 @@ int curTetrisBoard[BOARDSIZE];
 int (*curRenderedTetrisBoard)[BOARDSIZE];
 
 int gameOverRow = 0;
+int tetrisGameOverBlinkCnt;
 
 void initTetrisGame(int (*boardPtr)[BOARDSIZE]){
     initBoard(curTetrisBoard);
 
+    tetrisGameOverBlinkCnt = 20;
     curRenderedTetrisBoard = boardPtr;
     initRandomPiece(&piece);
-    renderBoard(*curRenderedTetrisBoard, curTetrisBoard, &piece);
+    renderBoard(*curRenderedTetrisBoard, curTetrisBoard, &piece, false);
 }
 
 void displayPlayerPiece(){
-    renderBoard(*curRenderedTetrisBoard, curTetrisBoard, &piece);
+    renderBoard(*curRenderedTetrisBoard, curTetrisBoard, &piece, false);
 }
 
 enum gameSignal handleTetrisTick(){
@@ -101,6 +103,20 @@ enum gameSignal handleTetrisUserEvent(char c){
 
 bool gameOverTetrisAnimation(){
 
+    //blink colliding part
+    if(tetrisGameOverBlinkCnt){
+        if(tetrisGameOverBlinkCnt % 2){
+            renderBoard(*curRenderedTetrisBoard, curTetrisBoard, &piece, true);
+        }else{
+            renderBoard(*curRenderedTetrisBoard, curTetrisBoard, &piece, false);
+        }
+
+        tetrisGameOverBlinkCnt--;
+        return false;
+    }
+
+
+    // collapse tower
     if(gameOverRow == BOARD_Y){
         gameOverRow = 0;
         return true;
