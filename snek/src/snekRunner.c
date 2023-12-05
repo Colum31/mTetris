@@ -4,7 +4,8 @@
 #include "snekRunner.h"
 
 uint8_t (*curRenderedSnekBoard)[BOARDSIZE];
-uint8_t curSnek[BOARDSIZE];
+uint8_t (*curSnek)[BOARDSIZE];
+
 int snekLen;
 
 int foodPos;
@@ -16,20 +17,24 @@ int gameOverBlinkCnt;
 int gameOverSnekPosCnt;
 
 void initSnekGame(uint8_t (*boardPtr)[BOARDSIZE], uint8_t (*bufferPtr)[BOARDSIZE]){
-
-    initSnek(curSnek);
+    
     curRenderedSnekBoard = boardPtr;
+    curSnek = bufferPtr;
+
     memset(*curRenderedSnekBoard, 0, BOARDSIZE * sizeof(uint8_t));
+    memset(*curSnek, 0, BOARDSIZE * sizeof(uint8_t));
+
+    initSnek(*curSnek);
 
     snekLen = SNEK_SPAWN_LEN;
-    foodPos = initFood(curSnek, snekLen);
+    foodPos = initFood(*curSnek, snekLen);
     curDir = snekRight;
     nextDir = snekRight;
 
     gameOverBlinkCnt = 20;
     gameOverSnekPosCnt = 0;
 
-    renderSnekBoard(*curRenderedSnekBoard, curSnek, snekLen, foodPos);
+    renderSnekBoard(*curRenderedSnekBoard, *curSnek, snekLen, foodPos);
 }
 
 enum gameSignal handleUserSnek(char c){
@@ -63,9 +68,9 @@ enum gameSignal handleUserSnek(char c){
 
 enum gameSignal handleSnekTick(){
 
-    bool movePossible = snekMove(curSnek, &snekLen, nextDir, &foodPos);
+    bool movePossible = snekMove(*curSnek, &snekLen, nextDir, &foodPos);
     curDir = nextDir;
-    renderSnekBoard(*curRenderedSnekBoard, curSnek, snekLen, foodPos);
+    renderSnekBoard(*curRenderedSnekBoard, *curSnek, snekLen, foodPos);
 
     if(movePossible){
         return gameContinues;
@@ -79,7 +84,7 @@ bool gameOverAnimationSnek(){
     // blink, where snek bit itself
     if(gameOverBlinkCnt){
 
-        int snekHead = curSnek[0];
+        int snekHead = *curSnek[0];
 
         if(gameOverBlinkCnt % 2){
             (*curRenderedSnekBoard)[snekHead] = 0;
@@ -93,7 +98,7 @@ bool gameOverAnimationSnek(){
 
     // degenerate snake
     if(gameOverSnekPosCnt <= snekLen){
-        int curPos = curSnek[gameOverSnekPosCnt];
+        int curPos = *curSnek[gameOverSnekPosCnt];
         (*curRenderedSnekBoard)[curPos] = 0;
         gameOverSnekPosCnt++;
         return false;
