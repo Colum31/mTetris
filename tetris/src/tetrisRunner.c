@@ -5,39 +5,42 @@
 
 struct pieceInfo piece;
 
-uint8_t curTetrisBoard[BOARDSIZE];
+uint8_t (*curTetrisBoard)[BOARDSIZE];
 uint8_t (*curRenderedTetrisBoard)[BOARDSIZE];
 
 int gameOverRow = 0;
 int tetrisGameOverBlinkCnt;
 
 void initTetrisGame(uint8_t (*boardPtr)[BOARDSIZE], uint8_t (*bufferPtr)[BOARDSIZE]){
-    initBoard(curTetrisBoard);
+    
+    curRenderedTetrisBoard = boardPtr;
+    curTetrisBoard = bufferPtr;
+
+    initBoard(*curTetrisBoard);
 
     tetrisGameOverBlinkCnt = 20;
-    curRenderedTetrisBoard = boardPtr;
     initRandomPiece(&piece);
-    renderBoard(*curRenderedTetrisBoard, curTetrisBoard, &piece, false);
+    renderBoard(*curRenderedTetrisBoard, *curTetrisBoard, &piece, false);
 }
 
 void displayPlayerPiece(){
-    renderBoard(*curRenderedTetrisBoard, curTetrisBoard, &piece, false);
+    renderBoard(*curRenderedTetrisBoard, *curTetrisBoard, &piece, false);
 }
 
 enum gameSignal handleTetrisTick(){
 
-    if(checkMove(piece.piece, piece.pieceX, piece.pieceY + 1, piece.pieceShape, curTetrisBoard)){
+    if(checkMove(piece.piece, piece.pieceX, piece.pieceY + 1, piece.pieceShape, *curTetrisBoard)){
         piece.pieceY++;
         displayPlayerPiece();
         return gameContinues;
     }
 
-    updateBoard(curTetrisBoard, &piece);
-    clearRows(curTetrisBoard, piece.pieceY);
+    updateBoard(*curTetrisBoard, &piece);
+    clearRows(*curTetrisBoard, piece.pieceY);
 
     initRandomPiece(&piece);
 
-    if(!checkSpawnPiece(piece.piece, curTetrisBoard, piece.pieceShape)){
+    if(!checkSpawnPiece(piece.piece, *curTetrisBoard, piece.pieceShape)){
         displayPlayerPiece();
         return gameOver;
     }
@@ -78,7 +81,7 @@ enum gameSignal handleTetrisUserEvent(char c){
             return continueTimer;
     }
 
-    enum boardAction ret = handleUserInput(req, curTetrisBoard, &piece);
+    enum boardAction ret = handleUserInput(req, *curTetrisBoard, &piece);
 
     switch(ret){
 
@@ -106,9 +109,9 @@ bool gameOverTetrisAnimation(){
     //blink colliding part
     if(tetrisGameOverBlinkCnt){
         if(tetrisGameOverBlinkCnt % 2){
-            renderBoard(*curRenderedTetrisBoard, curTetrisBoard, &piece, true);
+            renderBoard(*curRenderedTetrisBoard, *curTetrisBoard, &piece, true);
         }else{
-            renderBoard(*curRenderedTetrisBoard, curTetrisBoard, &piece, false);
+            renderBoard(*curRenderedTetrisBoard, *curTetrisBoard, &piece, false);
         }
 
         tetrisGameOverBlinkCnt--;
