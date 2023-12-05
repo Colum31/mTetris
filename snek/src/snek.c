@@ -143,8 +143,8 @@ bool snekMove(int *curSnek, int *curSnekLen, enum snekDirection dir, int *foodPo
     return true;
 }
 
-void renderSnekBoard(int *board, int *snek, int snekLen, int foodPos){
-    memset(board, 0, sizeof(int) * BOARDSIZE);
+void renderSnekBoard(uint8_t *board, int *snek, int snekLen, int foodPos){
+    memset(board, 0, sizeof(uint8_t) * BOARDSIZE);
 
     for(int i = 0; i < snekLen; i++){
         int pos = snek[i];

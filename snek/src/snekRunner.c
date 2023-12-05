@@ -3,7 +3,7 @@
 #include "snek.h"
 #include "snekRunner.h"
 
-int (*curRenderedSnekBoard)[BOARDSIZE];
+uint8_t (*curRenderedSnekBoard)[BOARDSIZE];
 int curSnek[BOARDSIZE];
 int snekLen;
 
@@ -15,11 +15,11 @@ enum snekDirection nextDir;
 int gameOverBlinkCnt;
 int gameOverSnekPosCnt;
 
-void initSnekGame(int (*boardPtr)[BOARDSIZE]){
+void initSnekGame(uint8_t (*boardPtr)[BOARDSIZE]){
 
     initSnek(curSnek);
     curRenderedSnekBoard = boardPtr;
-    memset(*curRenderedSnekBoard, 0, BOARDSIZE * sizeof(int));
+    memset(*curRenderedSnekBoard, 0, BOARDSIZE * sizeof(uint8_t));
 
     snekLen = SNEK_SPAWN_LEN;
     foodPos = initFood(curSnek, snekLen);
