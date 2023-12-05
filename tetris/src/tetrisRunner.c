@@ -11,7 +11,7 @@ uint8_t (*curRenderedTetrisBoard)[BOARDSIZE];
 int gameOverRow = 0;
 int tetrisGameOverBlinkCnt;
 
-void initTetrisGame(uint8_t (*boardPtr)[BOARDSIZE]){
+void initTetrisGame(uint8_t (*boardPtr)[BOARDSIZE], uint8_t (*bufferPtr)[BOARDSIZE]){
     initBoard(curTetrisBoard);
 
     tetrisGameOverBlinkCnt = 20;

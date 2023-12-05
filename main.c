@@ -5,8 +5,10 @@
 struct timespec lastTick;
 struct game *curSelectedGame;
 int curGameWaitTick;
-uint8_t curGameBoard[BOARDSIZE];
 int startedGame;
+
+uint8_t curGameBoard[BOARDSIZE];
+uint8_t curGameBuffer[BOARDSIZE];
 
 void loadNewGame(struct game *toLoad){
     curSelectedGame = toLoad;
@@ -21,7 +23,7 @@ void loadNewGame(struct game *toLoad){
 int main(){
     initDisplay();
 
-    curSelectedGame = initGameStructs(&curGameBoard);
+    curSelectedGame = initGameStructs(&curGameBoard, &curGameBuffer);
     loadNewGame(curSelectedGame);
 
     while(1){

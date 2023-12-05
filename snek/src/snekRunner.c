@@ -15,7 +15,7 @@ enum snekDirection nextDir;
 int gameOverBlinkCnt;
 int gameOverSnekPosCnt;
 
-void initSnekGame(uint8_t (*boardPtr)[BOARDSIZE]){
+void initSnekGame(uint8_t (*boardPtr)[BOARDSIZE], uint8_t (*bufferPtr)[BOARDSIZE]){
 
     initSnek(curSnek);
     curRenderedSnekBoard = boardPtr;
