@@ -2,6 +2,7 @@
 #define SNEK_H
 
 #include <stdbool.h>
+#include <stdint.h>
 
 #define SNEK_SPAWN_LEN 4
 #define SNEK_SPAWN_Y (BOARD_Y / 4)

@@ -9,7 +9,7 @@ void initDisplay(){
 }
 
 
-void drawBoard(int *boardToDraw){
+void drawBoard(uint8_t *boardToDraw){
 
     clear();
 

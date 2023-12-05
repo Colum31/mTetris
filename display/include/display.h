@@ -5,6 +5,6 @@
 #include "settings.h"
 
 void initDisplay();
-void drawBoard(int *boardToDraw);
+void drawBoard(uint8_t *boardToDraw);
 
 #endif

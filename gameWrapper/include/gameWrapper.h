@@ -13,7 +13,7 @@
 struct game{
     struct game *prevGame;
     char gameName[GAME_NAME_LEN];
-    void (*initGame)(int (*board)[BOARDSIZE]);
+    void (*initGame)(uint8_t (*board)[BOARDSIZE]);
     enum gameSignal (*handlePlayerInput)(char);
     enum gameSignal (*handleTick)(void);
     bool (*gameOverAnimation)(void);
@@ -21,7 +21,7 @@ struct game{
     struct game *nextGame;
 };
 
-struct game* initGameStructs(int (*boardPtr)[BOARDSIZE]);
+struct game* initGameStructs(uint8_t (*boardPtr)[BOARDSIZE]);
 struct game *setPrevGame(struct game *curGame);
 struct game *setNextGame(struct game *curGame);
 struct game *setGame(struct game *curGame);

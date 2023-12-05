@@ -5,7 +5,7 @@
 struct timespec lastTick;
 struct game *curSelectedGame;
 int curGameWaitTick;
-int curGameBoard[BOARDSIZE];
+uint8_t curGameBoard[BOARDSIZE];
 int startedGame;
 
 void loadNewGame(struct game *toLoad){

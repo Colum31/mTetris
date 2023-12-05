@@ -5,15 +5,15 @@
 char gameNames[NUM_GAMES][GAME_NAME_LEN] = {"Tetris", "Snek"};
 enum gameSignal (*handlePlayerInputFunctions[NUM_GAMES])(char) = {handleTetrisUserEvent, handleUserSnek};
 enum gameSignal (*handleTickFunctions[NUM_GAMES])(void) = {handleTetrisTick, handleSnekTick};
-void (*initGameFunctions[NUM_GAMES])(int (*board)[BOARDSIZE]) = {initTetrisGame, initSnekGame};
+void (*initGameFunctions[NUM_GAMES])(uint8_t (*board)[BOARDSIZE]) = {initTetrisGame, initSnekGame};
 bool (*gameOverAnimationFunctions[NUM_GAMES])(void) = {gameOverTetrisAnimation, gameOverAnimationSnek};
 int gameTicks[NUM_GAMES] = {TETRIS_TICK_MS, SNEK_TICK_MS};
 
 struct game availableGames[NUM_GAMES];
-int (*boardPtr)[BOARDSIZE];
+uint8_t (*boardPtr)[BOARDSIZE];
 
 
-struct game *initGameStructs(int (*curBoardPtr)[BOARDSIZE]){
+struct game *initGameStructs(uint8_t (*curBoardPtr)[BOARDSIZE]){
     struct game *firstGame;
     struct game *curGame;
     struct game *prevGame;

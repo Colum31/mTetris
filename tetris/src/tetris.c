@@ -23,15 +23,15 @@ int pieceLenByShape(enum shape pieceShape){
 }
 
 int sideLenByShape(enum shape pieceShape){
-        if(pieceShape == IShape){
+    if(pieceShape == IShape){
         return I_PIECE_BOX_SIDE;
     }
     return DEFAULT_BOX_SIDE;   
 }
 
 
-void initBoard(int *boardToInit){
-    memset(boardToInit, 0, sizeof(int) * BOARDSIZE);
+void initBoard(uint8_t *boardToInit){
+    memset(boardToInit, 0, sizeof(uint8_t) * BOARDSIZE);
 }
 
 void initRandomPiece(struct pieceInfo *pieceToInit){
@@ -45,22 +45,22 @@ void initRandomPiece(struct pieceInfo *pieceToInit){
     pieceToInit->pieceY = SPAWN_Y;
 }
 
-void updateBoard(int *board, struct pieceInfo *playerPiece){
-    int renderedBoard[BOARDSIZE];
+void updateBoard(uint8_t *board, struct pieceInfo *playerPiece){
+    uint8_t renderedBoard[BOARDSIZE];
     renderBoard(renderedBoard, board, playerPiece, false);
-    memcpy(board, renderedBoard, sizeof(int) * BOARDSIZE);
+    memcpy(board, renderedBoard, sizeof(uint8_t) * BOARDSIZE);
 }
 
-bool checkSpawnPiece(uint8_t *pieceToSpawn, int *boardToSpawnIn, enum shape pieceShape){
+bool checkSpawnPiece(uint8_t *pieceToSpawn, uint8_t *boardToSpawnIn, enum shape pieceShape){
     return checkMove(pieceToSpawn, SPAWN_X, SPAWN_Y, pieceShape, boardToSpawnIn);
 }
 
-void renderBoard(int *renderedBoard, int *boardToRender, struct pieceInfo *pieceToRender, bool substract){
+void renderBoard(uint8_t *renderedBoard, uint8_t *boardToRender, struct pieceInfo *pieceToRender, bool substract){
 
     int sideLen = sideLenByShape(pieceToRender->pieceShape);
     int pieceLen = pieceLenByShape(pieceToRender->pieceShape);
 
-    memcpy(renderedBoard, boardToRender, sizeof(int) * BOARDSIZE);
+    memcpy(renderedBoard, boardToRender, sizeof(uint8_t) * BOARDSIZE);
 
         for(int i = 0; i < pieceLen; i++){
         if(!(pieceToRender->piece[i])){
@@ -79,7 +79,7 @@ void renderBoard(int *renderedBoard, int *boardToRender, struct pieceInfo *piece
     }
 }
 
-enum boardAction handleUserInput(enum userRequest r, int *board, struct pieceInfo *playerPiece){
+enum boardAction handleUserInput(enum userRequest r, uint8_t *board, struct pieceInfo *playerPiece){
     
     int pieceLen = pieceLenByShape(playerPiece->pieceShape);
     uint8_t modifiedPiece[MAX_PIECE_LEN];
@@ -140,7 +140,7 @@ enum boardAction handleUserInput(enum userRequest r, int *board, struct pieceInf
     return none;
 }
 
-bool checkMove(uint8_t *piece, uint8_t piecePosX, uint8_t piecePosY, enum shape pieceShape, int *boardToCheck){
+bool checkMove(uint8_t *piece, uint8_t piecePosX, uint8_t piecePosY, enum shape pieceShape, uint8_t *boardToCheck){
 
     int sideLen = sideLenByShape(pieceShape);
 
@@ -206,7 +206,7 @@ void rotateLeft(uint8_t *dest, enum shape curShape){
     }
 }
 
-void clearRows(int *boardToClear, int pieceY){
+void clearRows(uint8_t *boardToClear, int pieceY){
 
     for(int y = pieceY; y < pieceY + MAX_BOX_SIDE + 1 && y < BOARD_Y; y++){
 
@@ -222,11 +222,11 @@ void clearRows(int *boardToClear, int pieceY){
         if(!rowSet){
             continue;
         }
-        memset(&boardToClear[y * BOARD_X], 0, BOARD_X * sizeof(int));
+        memset(&boardToClear[y * BOARD_X], 0, BOARD_X * sizeof(uint8_t));
 
         int toMove = y * BOARD_X;
 
-        memmove(&boardToClear[BOARD_X], boardToClear, toMove * sizeof(int));
+        memmove(&boardToClear[BOARD_X], boardToClear, toMove * sizeof(uint8_t));
     }
 
 }

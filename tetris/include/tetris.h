@@ -22,17 +22,17 @@ void rotateRight(uint8_t *dest, enum shape curShape);
 void rotateLeft(uint8_t *dest,  enum shape curShape);
 
 
-void initBoard(int *boardToInit);
+void initBoard(uint8_t *boardToInit);
 void initRandomPiece(struct pieceInfo *pieceToInit);
 
-void updateBoard(int *board, struct pieceInfo *playerPiece);
-void clearRows(int *boardToClear, int pieceY);
+void updateBoard(uint8_t *board, struct pieceInfo *playerPiece);
+void clearRows(uint8_t *boardToClear, int pieceY);
 
-enum boardAction handleUserInput(enum userRequest r, int *board, struct pieceInfo *playerPiece);
+enum boardAction handleUserInput(enum userRequest r, uint8_t *board, struct pieceInfo *playerPiece);
 
-bool checkSpawnPiece(uint8_t *pieceToSpawn, int *boardToSpawnIn, enum shape pieceShape);
-void renderBoard(int *renderedBoard, int *boardToRender, struct pieceInfo *pieceToRender, bool substract);
-bool checkMove(uint8_t *piece, uint8_t piecePosX, uint8_t piecePosY, enum shape pieceShape, int *boardToCheck);
+bool checkSpawnPiece(uint8_t *pieceToSpawn, uint8_t *boardToSpawnIn, enum shape pieceShape);
+void renderBoard(uint8_t *renderedBoard, uint8_t *boardToRender, struct pieceInfo *pieceToRender, bool substract);
+bool checkMove(uint8_t *piece, uint8_t piecePosX, uint8_t piecePosY, enum shape pieceShape, uint8_t *boardToCheck);
 
 
 #endif

@@ -5,13 +5,13 @@
 
 struct pieceInfo piece;
 
-int curTetrisBoard[BOARDSIZE];
-int (*curRenderedTetrisBoard)[BOARDSIZE];
+uint8_t curTetrisBoard[BOARDSIZE];
+uint8_t (*curRenderedTetrisBoard)[BOARDSIZE];
 
 int gameOverRow = 0;
 int tetrisGameOverBlinkCnt;
 
-void initTetrisGame(int (*boardPtr)[BOARDSIZE]){
+void initTetrisGame(uint8_t (*boardPtr)[BOARDSIZE]){
     initBoard(curTetrisBoard);
 
     tetrisGameOverBlinkCnt = 20;
@@ -122,7 +122,7 @@ bool gameOverTetrisAnimation(){
         return true;
     }
 
-    memset( &(*curRenderedTetrisBoard)[BOARD_X * (BOARD_Y - gameOverRow - 1)], 0, BOARD_X * sizeof(int));
+    memset( &(*curRenderedTetrisBoard)[BOARD_X * (BOARD_Y - gameOverRow - 1)], 0, BOARD_X * sizeof(uint8_t));
     gameOverRow++;
     return false;
 }
