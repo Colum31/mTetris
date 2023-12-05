@@ -4,7 +4,7 @@
 #include "snekRunner.h"
 
 uint8_t (*curRenderedSnekBoard)[BOARDSIZE];
-int curSnek[BOARDSIZE];
+uint8_t curSnek[BOARDSIZE];
 int snekLen;
 
 int foodPos;

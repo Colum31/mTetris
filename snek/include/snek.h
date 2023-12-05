@@ -10,10 +10,10 @@
 
 enum snekDirection{snekUp, snekDown, snekRight, snekLeft};
 
-void initSnek(int *curSnekBoard);
-int initFood(int *curSnek, int curSnekLen);
-void renderSnekBoard(uint8_t *board, int *snek, int snekLen, int foodPos);
-bool snekMove(int *curSnek, int *curSnekLen, enum snekDirection dir, int *foodPos);
+void initSnek(uint8_t *curSnek);
+int initFood(uint8_t *curSnek, int curSnekLen);
+void renderSnekBoard(uint8_t *board, uint8_t *snek, int snekLen, int foodPos);
+bool snekMove(uint8_t *curSnek, int *curSnekLen, enum snekDirection dir, int *foodPos);
 enum snekDirection oppositeDirection(enum snekDirection dir);
 
 

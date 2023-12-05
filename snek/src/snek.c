@@ -4,9 +4,9 @@
 
 #include "snek.h"
 
-void initSnek(int *curSnek){
+void initSnek(uint8_t *curSnek){
 
-    memset(curSnek, 0, BOARDSIZE * sizeof(int));
+    memset(curSnek, 0, BOARDSIZE * sizeof(uint8_t));
 
     for(int i = 0; i < SNEK_SPAWN_LEN; i++){
 
@@ -15,7 +15,7 @@ void initSnek(int *curSnek){
     }
 }
 
-int initFood(int *curSnek, int curSnekLen){
+int initFood(uint8_t *curSnek, int curSnekLen){
     
     int foodPos;
     int foundPos;
@@ -113,7 +113,7 @@ enum snekDirection oppositeDirection(enum snekDirection dir){
     }
 }
 
-bool snekMove(int *curSnek, int *curSnekLen, enum snekDirection dir, int *foodPos){
+bool snekMove(uint8_t *curSnek, int *curSnekLen, enum snekDirection dir, int *foodPos){
 
     int curSnekHeadPos = curSnek[0];
     int nextSnekHeadPos = nextPos(curSnekHeadPos, dir);
@@ -124,7 +124,7 @@ bool snekMove(int *curSnek, int *curSnekLen, enum snekDirection dir, int *foodPo
         return true;
     }
 
-    memmove(curSnek + 1, curSnek, (*curSnekLen - 1) * sizeof(int));
+    memmove(curSnek + 1, curSnek, (*curSnekLen - 1) * sizeof(uint8_t));
     curSnek[0] = nextSnekHeadPos;
 
     if(curSnek[0] == *foodPos){
@@ -143,7 +143,7 @@ bool snekMove(int *curSnek, int *curSnekLen, enum snekDirection dir, int *foodPo
     return true;
 }
 
-void renderSnekBoard(uint8_t *board, int *snek, int snekLen, int foodPos){
+void renderSnekBoard(uint8_t *board, uint8_t *snek, int snekLen, int foodPos){
     memset(board, 0, sizeof(uint8_t) * BOARDSIZE);
 
     for(int i = 0; i < snekLen; i++){
