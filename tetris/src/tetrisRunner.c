@@ -8,8 +8,8 @@ struct pieceInfo piece;
 uint8_t (*curTetrisBoard)[BOARDSIZE];
 uint8_t (*curRenderedTetrisBoard)[BOARDSIZE];
 
-int gameOverRow = 0;
-int tetrisGameOverBlinkCnt;
+uint8_t gameOverRow = 0;
+uint8_t tetrisGameOverBlinkCnt;
 
 void initTetrisGame(uint8_t (*boardPtr)[BOARDSIZE], uint8_t (*bufferPtr)[BOARDSIZE]){
     
