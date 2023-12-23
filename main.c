@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 #include "display.h"
 #include "timer.h"
 #include "gameWrapper.h"
@@ -6,6 +8,7 @@ struct timespec lastTick;
 struct game *curSelectedGame;
 int curGameWaitTick;
 int startedGame;
+
 
 uint8_t curGameBoard[BOARDSIZE];
 uint8_t curGameBuffer[BOARDSIZE];
@@ -38,6 +41,9 @@ int main(){
         timeout(curGameWaitTick);
         saveTickTime(&lastTick);
 
+        bool gameIsPaused = false;
+        int pausedRemainingTime = 0;
+
         while(1){
             char c = getch();
 
@@ -51,7 +57,27 @@ int main(){
                 break;
             }
 
-            if(curSelectedGame->handlePlayerInput(c) == skipTimer){
+            if(c == BINDING_PAUSE_GAME){
+                if(gameIsPaused){
+                    gameIsPaused = false;
+                    timeout(pausedRemainingTime);
+                    continue;
+                }else{
+                    gameIsPaused = true;
+                    pausedRemainingTime = checkTick(&lastTick, curGameWaitTick);
+                    timeout(-1);
+                    continue;
+                }
+            }
+
+            if(gameIsPaused){
+                continue;
+            }
+
+            
+            enum gameSignal signal = curSelectedGame->handlePlayerInput(c);
+
+            if(signal == skipTimer){
                 drawBoard(curGameBoard);
                 break;
             }

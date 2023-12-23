@@ -37,6 +37,7 @@
 #define BINDING_INSTANT_DROP 'l'
 
 #define BINDING_LOAD_NEW_GAME 'k'
+#define BINDING_PAUSE_GAME 'p'
 
 enum gameSignal{continueTimer, skipTimer, gameOver, gameContinues};
 
