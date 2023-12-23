@@ -84,7 +84,7 @@ bool gameOverAnimationSnek(){
     // blink, where snek bit itself
     if(gameOverBlinkCnt){
 
-        int snekHead = *curSnek[0];
+        int snekHead = (*curSnek)[0];
 
         if(gameOverBlinkCnt % 2){
             (*curRenderedSnekBoard)[snekHead] = 0;
@@ -98,7 +98,7 @@ bool gameOverAnimationSnek(){
 
     // degenerate snake
     if(gameOverSnekPosCnt <= snekLen){
-        int curPos = *curSnek[gameOverSnekPosCnt];
+        int curPos = (*curSnek)[gameOverSnekPosCnt];
         (*curRenderedSnekBoard)[curPos] = 0;
         gameOverSnekPosCnt++;
         return false;

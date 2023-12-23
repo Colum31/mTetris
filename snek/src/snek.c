@@ -74,7 +74,7 @@ int nextPosRight(int curPos){
 int nextPosLeft(int curPos){
     int simpleLeft = curPos - 1;
 
-    if(getRow(curPos) == getRow(simpleLeft)){
+    if(getRow(curPos) == getRow(simpleLeft) && simpleLeft >= 0){
         return simpleLeft;
     }
 
